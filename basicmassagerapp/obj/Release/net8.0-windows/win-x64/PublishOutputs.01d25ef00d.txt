@@ -1,0 +1,2 @@
+C:\Users\kisac\Documents\.test\testone\basicmassagerapp.pdb
+C:\Users\kisac\Documents\.test\testone\basicmassagerapp.exe

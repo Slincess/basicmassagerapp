@@ -31,8 +31,9 @@
             textBox1 = new TextBox();
             Sendbtn = new Button();
             massagelist = new FlowLayoutPanel();
-            button1 = new Button();
+            connectButton = new Button();
             NameBox = new TextBox();
+            disconnectBtn = new Button();
             SuspendLayout();
             // 
             // textBox1
@@ -63,14 +64,15 @@
             massagelist.Size = new Size(452, 326);
             massagelist.TabIndex = 5;
             // 
-            // button1
+            // connectButton
             // 
-            button1.Location = new Point(82, 397);
-            button1.Name = "button1";
-            button1.Size = new Size(55, 21);
-            button1.TabIndex = 6;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
+            connectButton.Location = new Point(82, 397);
+            connectButton.Name = "connectButton";
+            connectButton.Size = new Size(55, 21);
+            connectButton.TabIndex = 6;
+            connectButton.Text = "button1";
+            connectButton.UseVisualStyleBackColor = true;
+            connectButton.Click += button1_Click;
             // 
             // NameBox
             // 
@@ -80,14 +82,25 @@
             NameBox.TabIndex = 7;
             NameBox.Text = "Anonym";
             // 
+            // disconnectBtn
+            // 
+            disconnectBtn.Location = new Point(511, 12);
+            disconnectBtn.Name = "disconnectBtn";
+            disconnectBtn.Size = new Size(88, 28);
+            disconnectBtn.TabIndex = 8;
+            disconnectBtn.Text = "disconnect";
+            disconnectBtn.UseVisualStyleBackColor = true;
+            disconnectBtn.Click += disconnectBtn_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DimGray;
             ClientSize = new Size(611, 450);
+            Controls.Add(disconnectBtn);
             Controls.Add(NameBox);
-            Controls.Add(button1);
+            Controls.Add(connectButton);
             Controls.Add(massagelist);
             Controls.Add(Sendbtn);
             Controls.Add(textBox1);
@@ -102,7 +115,8 @@
         private TextBox textBox1;
         private Button Sendbtn;
         private FlowLayoutPanel massagelist;
-        private Button button1;
+        private Button connectButton;
         private TextBox NameBox;
+        private Button disconnectBtn;
     }
 }
