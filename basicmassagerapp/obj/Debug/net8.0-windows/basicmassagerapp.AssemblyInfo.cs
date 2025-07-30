@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("basicmassagerapp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+88045585a96770c31393bc076cf0c7d32b5dc9d8")]
 [assembly: System.Reflection.AssemblyProductAttribute("basicmassagerapp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("basicmassagerapp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

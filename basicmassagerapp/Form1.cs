@@ -51,11 +51,14 @@ namespace basicmassagerapp
 
         private void Connect()
         {
+            byte[] name = new byte[1024];
+            name = Encoding.UTF8.GetBytes("testerone");
             client = new TcpClient("127.0.0.1", 5000);
             stream = client.GetStream();
             cts = new CancellationTokenSource();
             Task response = new Task(() => getmassages());
             response.Start();
+            stream.Write(name, 0, name.Length);
 
         }
 

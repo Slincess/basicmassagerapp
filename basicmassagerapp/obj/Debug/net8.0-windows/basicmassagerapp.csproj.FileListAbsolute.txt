@@ -14,3 +14,4 @@ C:\Users\kisac\source\repos\basicmassagerapp\basicmassagerapp\obj\Debug\net8.0-w
 C:\Users\kisac\source\repos\basicmassagerapp\basicmassagerapp\obj\Debug\net8.0-windows\basicmassagerapp.pdb
 C:\Users\kisac\source\repos\basicmassagerapp\basicmassagerapp\obj\Debug\net8.0-windows\basicmassagerapp.genruntimeconfig.cache
 C:\Users\kisac\source\repos\basicmassagerapp\basicmassagerapp\obj\Debug\net8.0-windows\ref\basicmassagerapp.dll
+C:\Users\kisac\source\repos\basicmassagerapp\basicmassagerapp\obj\Debug\net8.0-windows\basicmassagerapp.sourcelink.json

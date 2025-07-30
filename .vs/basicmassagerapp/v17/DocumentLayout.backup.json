@@ -7,7 +7,7 @@
       "RelativeMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmassagerapp.csproj|solutionrelative:basicmassagerapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmassagerapp.csproj|c:\\users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmassagerapp.csproj|C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmassagerapp.csproj|solutionrelative:basicmassagerapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
@@ -40,7 +40,7 @@
               "RelativeDocumentMoniker": "basicmassagerapp\\Form1.cs",
               "ToolTip": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\Form1.cs",
               "RelativeToolTip": "basicmassagerapp\\Form1.cs",
-              "ViewState": "AgIAAB0AAAAAAAAAAAAAAC0AAAArAAAAAAAAAA==",
+              "ViewState": "AgIAACIAAAAAAAAAAAAQwDwAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-29T15:56:01.689Z",
               "IsPinned": true,
@@ -55,8 +55,7 @@
               "ToolTip": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\Form1.cs [Entwurf]",
               "RelativeToolTip": "basicmassagerapp\\Form1.cs [Entwurf]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-29T18:00:40.088Z",
-              "EditorCaption": " [Entwurf]"
+              "WhenOpened": "2025-07-29T18:00:40.088Z"
             },
             {
               "$type": "Document",
@@ -68,8 +67,7 @@
               "RelativeToolTip": "basicmassagerapp\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAqwAgAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-29T16:42:16.111Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-29T16:42:16.111Z"
             },
             {
               "$type": "Document",
@@ -81,8 +79,7 @@
               "RelativeToolTip": "basicmassagerapp\\massage.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-29T16:10:11.721Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-29T16:10:11.721Z"
             },
             {
               "$type": "Document",
@@ -94,8 +91,7 @@
               "RelativeToolTip": "basicmassagerapp\\Form1.Designer.cs",
               "ViewState": "AgIAABgAAAAAAAAAAIAwwCwAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-29T16:02:43.697Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-29T16:02:43.697Z"
             }
           ]
         }
