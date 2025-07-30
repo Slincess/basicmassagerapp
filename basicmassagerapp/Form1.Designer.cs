@@ -30,15 +30,14 @@
         {
             textBox1 = new TextBox();
             Sendbtn = new Button();
-            checkBox1 = new CheckBox();
             massagelist = new FlowLayoutPanel();
-            label1 = new Label();
-            massagelist.SuspendLayout();
+            button1 = new Button();
+            NameBox = new TextBox();
             SuspendLayout();
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(92, 396);
+            textBox1.Location = new Point(147, 396);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(383, 23);
             textBox1.TabIndex = 0;
@@ -46,7 +45,7 @@
             // 
             // Sendbtn
             // 
-            Sendbtn.Location = new Point(481, 396);
+            Sendbtn.Location = new Point(536, 396);
             Sendbtn.Name = "Sendbtn";
             Sendbtn.Size = new Size(63, 24);
             Sendbtn.TabIndex = 1;
@@ -54,33 +53,32 @@
             Sendbtn.UseVisualStyleBackColor = true;
             Sendbtn.Click += Sendbtn_clicked;
             // 
-            // checkBox1
-            // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(481, 12);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(82, 19);
-            checkBox1.TabIndex = 4;
-            checkBox1.Text = "checkBox1";
-            checkBox1.UseVisualStyleBackColor = true;
-            // 
             // massagelist
             // 
-            massagelist.Controls.Add(label1);
+            massagelist.AutoScroll = true;
+            massagelist.AutoSize = true;
             massagelist.FlowDirection = FlowDirection.TopDown;
-            massagelist.Location = new Point(92, 54);
+            massagelist.Location = new Point(147, 54);
             massagelist.Name = "massagelist";
             massagelist.Size = new Size(452, 326);
             massagelist.TabIndex = 5;
             // 
-            // label1
+            // button1
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(3, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(38, 15);
-            label1.TabIndex = 0;
-            label1.Text = "label1";
+            button1.Location = new Point(82, 397);
+            button1.Name = "button1";
+            button1.Size = new Size(55, 21);
+            button1.TabIndex = 6;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // NameBox
+            // 
+            NameBox.Location = new Point(5, 397);
+            NameBox.Name = "NameBox";
+            NameBox.Size = new Size(71, 23);
+            NameBox.TabIndex = 7;
+            NameBox.Text = "Anonym";
             // 
             // Form1
             // 
@@ -88,14 +86,13 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DimGray;
             ClientSize = new Size(611, 450);
+            Controls.Add(NameBox);
+            Controls.Add(button1);
             Controls.Add(massagelist);
-            Controls.Add(checkBox1);
             Controls.Add(Sendbtn);
             Controls.Add(textBox1);
             Name = "Form1";
             Text = "Form1";
-            massagelist.ResumeLayout(false);
-            massagelist.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -104,8 +101,8 @@
 
         private TextBox textBox1;
         private Button Sendbtn;
-        private CheckBox checkBox1;
         private FlowLayoutPanel massagelist;
-        private Label label1;
+        private Button button1;
+        private TextBox NameBox;
     }
 }

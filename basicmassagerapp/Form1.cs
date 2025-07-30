@@ -37,6 +37,10 @@ namespace basicmassagerapp
             {
                 byte[] response_byte = new byte[1024];
                 int response_int = stream.Read(response_byte);
+                if (response_int == 0)
+                {
+                    break;
+                }
 
                 string response_string = Encoding.UTF8.GetString(response_byte, 0, response_int);
                 this.Invoke(() =>
@@ -62,9 +66,5 @@ namespace basicmassagerapp
 
         }
 
-        private void massageList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
