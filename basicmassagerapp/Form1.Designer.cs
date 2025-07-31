@@ -34,6 +34,8 @@
             connectButton = new Button();
             NameBox = new TextBox();
             disconnectBtn = new Button();
+            label1 = new Label();
+            massagelist.SuspendLayout();
             SuspendLayout();
             // 
             // textBox1
@@ -58,6 +60,7 @@
             // 
             massagelist.AutoScroll = true;
             massagelist.AutoSize = true;
+            massagelist.Controls.Add(label1);
             massagelist.FlowDirection = FlowDirection.TopDown;
             massagelist.Location = new Point(147, 54);
             massagelist.Name = "massagelist";
@@ -92,6 +95,15 @@
             disconnectBtn.UseVisualStyleBackColor = true;
             disconnectBtn.Click += disconnectBtn_Click;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(3, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(38, 15);
+            label1.TabIndex = 0;
+            label1.Text = "label1";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -106,6 +118,8 @@
             Controls.Add(textBox1);
             Name = "Form1";
             Text = "Form1";
+            massagelist.ResumeLayout(false);
+            massagelist.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -118,5 +132,6 @@
         private Button connectButton;
         private TextBox NameBox;
         private Button disconnectBtn;
+        private Label label1;
     }
 }

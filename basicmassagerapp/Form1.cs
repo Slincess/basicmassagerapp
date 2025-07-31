@@ -18,7 +18,6 @@ namespace basicmassagerapp
         private DataPacks MyData;
 
         private Task response;
-        private bool IsClientConnected = false;
 
         public Form1()
         {
@@ -53,7 +52,7 @@ namespace basicmassagerapp
 
         private void getmassages()
         {
-            while (IsClientConnected)
+            while (client.Connected)
             {
                 byte[] response_byte = new byte[5000];
                 int response_int = stream.Read(response_byte);
@@ -76,7 +75,6 @@ namespace basicmassagerapp
 
         private void disconnect()
         {
-            IsClientConnected = false;
             DataPacks disconnectedSignal = new()
             {
                 CL_Name = "ADMIN",
@@ -107,6 +105,14 @@ namespace basicmassagerapp
             Sendbtn.Enabled = true;
             disconnectBtn.Enabled = true;
             connectButton.Enabled = false;
+
+            this.Invoke(() =>
+            {
+                Label massage = new();
+                massage.Text = "connected";
+                massage.AutoSize = true;
+                massagelist.Controls.Add(massage);
+            });
         }
 
 
