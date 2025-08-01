@@ -30,12 +30,10 @@
         {
             textBox1 = new TextBox();
             Sendbtn = new Button();
-            massagelist = new FlowLayoutPanel();
             connectButton = new Button();
             NameBox = new TextBox();
             disconnectBtn = new Button();
-            label1 = new Label();
-            massagelist.SuspendLayout();
+            massagelist = new FlowLayoutPanel();
             SuspendLayout();
             // 
             // textBox1
@@ -44,7 +42,7 @@
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(383, 23);
             textBox1.TabIndex = 0;
-            textBox1.TextChanged += textBox1_TextChanged;
+            textBox1.KeyDown += textBox1_Enter;
             // 
             // Sendbtn
             // 
@@ -55,17 +53,6 @@
             Sendbtn.Text = "send";
             Sendbtn.UseVisualStyleBackColor = true;
             Sendbtn.Click += Sendbtn_clicked;
-            // 
-            // massagelist
-            // 
-            massagelist.AutoScroll = true;
-            massagelist.AutoSize = true;
-            massagelist.Controls.Add(label1);
-            massagelist.FlowDirection = FlowDirection.TopDown;
-            massagelist.Location = new Point(147, 54);
-            massagelist.Name = "massagelist";
-            massagelist.Size = new Size(452, 326);
-            massagelist.TabIndex = 5;
             // 
             // connectButton
             // 
@@ -95,14 +82,16 @@
             disconnectBtn.UseVisualStyleBackColor = true;
             disconnectBtn.Click += disconnectBtn_Click;
             // 
-            // label1
+            // massagelist
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(3, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(38, 15);
-            label1.TabIndex = 0;
-            label1.Text = "label1";
+            massagelist.AutoScroll = true;
+            massagelist.FlowDirection = FlowDirection.TopDown;
+            massagelist.Location = new Point(147, 95);
+            massagelist.Name = "massagelist";
+            massagelist.RightToLeft = RightToLeft.No;
+            massagelist.Size = new Size(452, 282);
+            massagelist.TabIndex = 9;
+            massagelist.WrapContents = false;
             // 
             // Form1
             // 
@@ -110,16 +99,14 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DimGray;
             ClientSize = new Size(611, 450);
+            Controls.Add(massagelist);
             Controls.Add(disconnectBtn);
             Controls.Add(NameBox);
             Controls.Add(connectButton);
-            Controls.Add(massagelist);
             Controls.Add(Sendbtn);
             Controls.Add(textBox1);
             Name = "Form1";
             Text = "Form1";
-            massagelist.ResumeLayout(false);
-            massagelist.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -128,10 +115,9 @@
 
         private TextBox textBox1;
         private Button Sendbtn;
-        private FlowLayoutPanel massagelist;
         private Button connectButton;
         private TextBox NameBox;
         private Button disconnectBtn;
-        private Label label1;
+        private FlowLayoutPanel massagelist;
     }
 }

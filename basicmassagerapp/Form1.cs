@@ -25,19 +25,29 @@ namespace basicmassagerapp
             Sendbtn.Enabled = false;
             disconnectBtn.Enabled = false;
             connectButton.Enabled = true;
+            NameBox.Enabled = true;
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            disconnect();
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            //massage = Encoding.UTF8.GetBytes(textBox1.Text);
+            if (client != null && client.Connected)
+                disconnect();
         }
 
         private void Sendbtn_clicked(object sender, EventArgs e)
+        {
+            SendMassage();
+        }
+
+        private void textBox1_Enter(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                SendMassage();
+            }
+        }
+
+        private void SendMassage()
         {
             DataPacks data = new();
             data.CL_Name = NameBox.Text;
@@ -48,28 +58,54 @@ namespace basicmassagerapp
 
             massage = Encoding.UTF8.GetBytes(dataJson);
             stream.Write(massage, 0, massage.Length);
+            textBox1.Text = null;
         }
 
         private void getmassages()
         {
+            int massagesCount = 0;
+
             while (client.Connected)
             {
+                
+
                 byte[] response_byte = new byte[5000];
                 int response_int = stream.Read(response_byte);
+                string response_string = Encoding.UTF8.GetString(response_byte, 0, response_int);
                 if (response_int == 0)
                 {
                     break;
                 }
-
-                string response_string = Encoding.UTF8.GetString(response_byte, 0, response_int);
-                DataPacks response_string_Deserialized = JsonSerializer.Deserialize<DataPacks>(response_string);
-                this.Invoke(() =>
+                if (massagesCount == 0)
                 {
-                    Label massage = new();
-                    massage.Text = response_string_Deserialized.CL_Name + ": " + response_string_Deserialized.Massage;
-                    massage.AutoSize = true;
-                    massagelist.Controls.Add(massage);
-                });
+                    SV_Massages Sv_massages = JsonSerializer.Deserialize<SV_Massages>(response_string);
+                    Console.WriteLine(Sv_massages);
+                    foreach (var item in Sv_massages.SV_allMassages)
+                    {
+                        Console.WriteLine(item.Massage);
+                        this.Invoke((Delegate)(() =>
+                        {
+                            Label massage = new();
+                            massage.Text = item.sender + ": " + item.Massage;
+                            massage.AutoSize = true;
+                            massagelist.Controls.Add(massage);
+                            massagelist.ScrollControlIntoView(massagelist.Controls[massagelist.Controls.Count - 1]);
+                        }));
+                    }
+                    massagesCount++;
+                }
+                else
+                {
+                    DataPacks response_string_Deserialized = JsonSerializer.Deserialize<DataPacks>(response_string);
+                    this.Invoke((Delegate)(() =>
+                    {
+                        Label massage = new();
+                        massage.Text = response_string_Deserialized.CL_Name + ": " + response_string_Deserialized.Massage;
+                        massage.AutoSize = true;
+                        massagelist.Controls.Add(massage);
+                        massagelist.ScrollControlIntoView(massagelist.Controls[massagelist.Controls.Count - 1]);
+                    }));
+                }
             }
         }
 
@@ -89,6 +125,8 @@ namespace basicmassagerapp
             Sendbtn.Enabled = false;
             disconnectBtn.Enabled = false;
             connectButton.Enabled = true;
+            NameBox.Enabled = true;
+            massagelist.Controls.Clear();
         }
 
         private void Connect()
@@ -106,13 +144,14 @@ namespace basicmassagerapp
             disconnectBtn.Enabled = true;
             connectButton.Enabled = false;
 
-            this.Invoke(() =>
+            this.Invoke((Delegate)(() =>
             {
                 Label massage = new();
                 massage.Text = "connected";
                 massage.AutoSize = true;
                 massagelist.Controls.Add(massage);
-            });
+            }));
+            NameBox.Enabled = false;
         }
 
 
@@ -125,6 +164,11 @@ namespace basicmassagerapp
         private void button1_Click(object sender, EventArgs e)
         {
             Connect();
+        }
+
+        private void massagelist_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
@@ -139,4 +183,16 @@ public class DataPacks
 {
     public string? CL_Name { get; set; }
     public string? Massage { get; set; }
+}
+
+public class SV_Massages
+{
+    public List<massage> SV_allMassages { get; set; }
+}
+
+public class massage
+{
+    public string? Massage { get; set; }
+    public string? sender { get; set; }
+    public string? Hour { get; set; }
 }
