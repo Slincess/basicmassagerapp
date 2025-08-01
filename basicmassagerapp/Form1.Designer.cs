@@ -28,25 +28,54 @@
         /// </summary>
         private void InitializeComponent()
         {
+            massagelist = new FlowLayoutPanel();
+            connectButton = new Button();
             textBox1 = new TextBox();
             Sendbtn = new Button();
-            connectButton = new Button();
             NameBox = new TextBox();
-            disconnectBtn = new Button();
-            massagelist = new FlowLayoutPanel();
+            CCUPANEL = new FlowLayoutPanel();
+            label2 = new Label();
+            label1 = new Label();
+            flowLayoutPanel2 = new FlowLayoutPanel();
+            CCUPANEL.SuspendLayout();
+            flowLayoutPanel2.SuspendLayout();
             SuspendLayout();
+            // 
+            // massagelist
+            // 
+            massagelist.AutoScroll = true;
+            massagelist.BackColor = Color.Gray;
+            massagelist.FlowDirection = FlowDirection.TopDown;
+            massagelist.Location = new Point(252, 12);
+            massagelist.Name = "massagelist";
+            massagelist.RightToLeft = RightToLeft.No;
+            massagelist.Size = new Size(683, 562);
+            massagelist.TabIndex = 9;
+            massagelist.WrapContents = false;
+            // 
+            // connectButton
+            // 
+            connectButton.Location = new Point(165, 582);
+            connectButton.Name = "connectButton";
+            connectButton.Size = new Size(81, 26);
+            connectButton.TabIndex = 6;
+            connectButton.Text = "Connect";
+            connectButton.UseVisualStyleBackColor = true;
+            connectButton.Click += ConnectBtn_Click;
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(147, 396);
+            textBox1.Font = new Font("Segoe UI", 12F);
+            textBox1.Location = new Point(252, 582);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(383, 23);
+            textBox1.PlaceholderText = "type your massage";
+            textBox1.Size = new Size(614, 29);
             textBox1.TabIndex = 0;
             textBox1.KeyDown += textBox1_Enter;
             // 
             // Sendbtn
             // 
-            Sendbtn.Location = new Point(536, 396);
+            Sendbtn.Location = new Point(872, 585);
             Sendbtn.Name = "Sendbtn";
             Sendbtn.Size = new Size(63, 24);
             Sendbtn.TabIndex = 1;
@@ -54,70 +83,87 @@
             Sendbtn.UseVisualStyleBackColor = true;
             Sendbtn.Click += Sendbtn_clicked;
             // 
-            // connectButton
-            // 
-            connectButton.Location = new Point(82, 397);
-            connectButton.Name = "connectButton";
-            connectButton.Size = new Size(55, 21);
-            connectButton.TabIndex = 6;
-            connectButton.Text = "button1";
-            connectButton.UseVisualStyleBackColor = true;
-            connectButton.Click += button1_Click;
-            // 
             // NameBox
             // 
-            NameBox.Location = new Point(5, 397);
+            NameBox.Location = new Point(12, 582);
             NameBox.Name = "NameBox";
-            NameBox.Size = new Size(71, 23);
+            NameBox.Size = new Size(147, 23);
             NameBox.TabIndex = 7;
             NameBox.Text = "Anonym";
             // 
-            // disconnectBtn
+            // CCUPANEL
             // 
-            disconnectBtn.Location = new Point(511, 12);
-            disconnectBtn.Name = "disconnectBtn";
-            disconnectBtn.Size = new Size(88, 28);
-            disconnectBtn.TabIndex = 8;
-            disconnectBtn.Text = "disconnect";
-            disconnectBtn.UseVisualStyleBackColor = true;
-            disconnectBtn.Click += disconnectBtn_Click;
+            CCUPANEL.BackColor = Color.Gray;
+            CCUPANEL.Controls.Add(flowLayoutPanel2);
+            CCUPANEL.Location = new Point(12, 47);
+            CCUPANEL.Name = "CCUPANEL";
+            CCUPANEL.Padding = new Padding(10);
+            CCUPANEL.Size = new Size(234, 527);
+            CCUPANEL.TabIndex = 10;
             // 
-            // massagelist
+            // label2
             // 
-            massagelist.AutoScroll = true;
-            massagelist.FlowDirection = FlowDirection.TopDown;
-            massagelist.Location = new Point(147, 95);
-            massagelist.Name = "massagelist";
-            massagelist.RightToLeft = RightToLeft.No;
-            massagelist.Size = new Size(452, 282);
-            massagelist.TabIndex = 9;
-            massagelist.WrapContents = false;
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 15F);
+            label2.Location = new Point(65, 9);
+            label2.Name = "label2";
+            label2.Size = new Size(121, 28);
+            label2.TabIndex = 11;
+            label2.Text = "Online Users";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 13F);
+            label1.Location = new Point(13, 10);
+            label1.Name = "label1";
+            label1.Size = new Size(73, 25);
+            label1.TabIndex = 0;
+            label1.Text = "Slincess";
+            // 
+            // flowLayoutPanel2
+            // 
+            flowLayoutPanel2.BackColor = Color.Silver;
+            flowLayoutPanel2.Controls.Add(label1);
+            flowLayoutPanel2.Location = new Point(13, 13);
+            flowLayoutPanel2.Name = "flowLayoutPanel2";
+            flowLayoutPanel2.Padding = new Padding(10);
+            flowLayoutPanel2.Size = new Size(200, 45);
+            flowLayoutPanel2.TabIndex = 0;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
             BackColor = Color.DimGray;
-            ClientSize = new Size(611, 450);
+            ClientSize = new Size(957, 622);
+            Controls.Add(label2);
+            Controls.Add(CCUPANEL);
             Controls.Add(massagelist);
-            Controls.Add(disconnectBtn);
-            Controls.Add(NameBox);
+            Controls.Add(textBox1);
             Controls.Add(connectButton);
             Controls.Add(Sendbtn);
-            Controls.Add(textBox1);
+            Controls.Add(NameBox);
             Name = "Form1";
             Text = "Form1";
+            CCUPANEL.ResumeLayout(false);
+            flowLayoutPanel2.ResumeLayout(false);
+            flowLayoutPanel2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
+        private FlowLayoutPanel massagelist;
+        private Button connectButton;
         private TextBox textBox1;
         private Button Sendbtn;
-        private Button connectButton;
         private TextBox NameBox;
-        private Button disconnectBtn;
-        private FlowLayoutPanel massagelist;
+        private FlowLayoutPanel CCUPANEL;
+        private Label label2;
+        private FlowLayoutPanel flowLayoutPanel2;
+        private Label label1;
     }
 }

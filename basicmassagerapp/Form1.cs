@@ -19,18 +19,19 @@ namespace basicmassagerapp
 
         private Task response;
 
+        private bool IsClientConnected = false;
+        private int massagesCount = 0;
+
         public Form1()
         {
             InitializeComponent();
             Sendbtn.Enabled = false;
-            disconnectBtn.Enabled = false;
-            connectButton.Enabled = true;
             NameBox.Enabled = true;
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            if (client != null && client.Connected)
+            if (IsClientConnected)
                 disconnect();
         }
 
@@ -63,12 +64,9 @@ namespace basicmassagerapp
 
         private void getmassages()
         {
-            int massagesCount = 0;
 
             while (client.Connected)
             {
-                
-
                 byte[] response_byte = new byte[5000];
                 int response_int = stream.Read(response_byte);
                 string response_string = Encoding.UTF8.GetString(response_byte, 0, response_int);
@@ -80,31 +78,48 @@ namespace basicmassagerapp
                 {
                     SV_Massages Sv_massages = JsonSerializer.Deserialize<SV_Massages>(response_string);
                     Console.WriteLine(Sv_massages);
-                    foreach (var item in Sv_massages.SV_allMassages)
+                    try
                     {
-                        Console.WriteLine(item.Massage);
-                        this.Invoke((Delegate)(() =>
+                        if(Sv_massages.SV_allMassages != null)
                         {
-                            Label massage = new();
-                            massage.Text = item.sender + ": " + item.Massage;
-                            massage.AutoSize = true;
-                            massagelist.Controls.Add(massage);
-                            massagelist.ScrollControlIntoView(massagelist.Controls[massagelist.Controls.Count - 1]);
-                        }));
+                            foreach (var item in Sv_massages.SV_allMassages)
+                            {
+                                Console.WriteLine(item.Massage);
+                                this.Invoke((Delegate)(() =>
+                                {
+                                    MassageList_Add(item.sender + ": " + item.Massage);
+                                }));
+                            }
+                        }
                     }
+                    catch { }
                     massagesCount++;
                 }
                 else
                 {
-                    DataPacks response_string_Deserialized = JsonSerializer.Deserialize<DataPacks>(response_string);
-                    this.Invoke((Delegate)(() =>
+                    if (response_string.Contains("SV_CCU"))
                     {
-                        Label massage = new();
-                        massage.Text = response_string_Deserialized.CL_Name + ": " + response_string_Deserialized.Massage;
-                        massage.AutoSize = true;
-                        massagelist.Controls.Add(massage);
-                        massagelist.ScrollControlIntoView(massagelist.Controls[massagelist.Controls.Count - 1]);
-                    }));
+                        Users CurrentUsers = JsonSerializer.Deserialize<Users>(response_string);
+                        if (CurrentUsers.SV_CCU != null)
+                        {
+                            foreach (var item in CurrentUsers.SV_CCU)
+                            {
+                                this.Invoke((Delegate)(() =>
+                                {
+                                    CCUList_add(item.CL_Name);
+                                    MassageList_Add(item.CL_Name);
+                                }));
+                            }
+                        }
+                    }
+                    if (response_string.Contains("Massage"))
+                    {
+                        DataPacks response_string_Deserialized = JsonSerializer.Deserialize<DataPacks>(response_string);
+                        this.Invoke((Delegate)(() =>
+                        {
+                            MassageList_Add(response_string_Deserialized.CL_Name + ": " + response_string_Deserialized.Massage);
+                        }));
+                    }
                 }
             }
         }
@@ -122,11 +137,8 @@ namespace basicmassagerapp
             Thread.Sleep(100);
             client.GetStream().Close();
             client.Close();
-            Sendbtn.Enabled = false;
-            disconnectBtn.Enabled = false;
-            connectButton.Enabled = true;
-            NameBox.Enabled = true;
             massagelist.Controls.Clear();
+            massagesCount = 0;
         }
 
         private void Connect()
@@ -140,43 +152,72 @@ namespace basicmassagerapp
             response = Task.Run(() => getmassages());
             //sresponse.Start();
             stream.Write(name, 0, name.Length);
-            Sendbtn.Enabled = true;
-            disconnectBtn.Enabled = true;
-            connectButton.Enabled = false;
 
             this.Invoke((Delegate)(() =>
             {
-                Label massage = new();
-                massage.Text = "connected";
-                massage.AutoSize = true;
-                massagelist.Controls.Add(massage);
+                MassageList_Add("Connected");
             }));
-            NameBox.Enabled = false;
         }
 
 
 
-        private void disconnectBtn_Click(object sender, EventArgs e)
+
+        private void ConnectBtn_Click(object sender, EventArgs e)
         {
-            disconnect();
+            if (IsClientConnected)
+            {
+                disconnect();
+                IsClientConnected = false;
+                Sendbtn.Enabled = false;
+                NameBox.Enabled = true;
+                textBox1.Enabled = false;
+            }
+            else
+            {
+                Connect();
+                IsClientConnected = true;
+                Sendbtn.Enabled = true;
+                NameBox.Enabled = false;
+                textBox1.Enabled = true;
+            }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void MassageList_Add(string text)
         {
-            Connect();
+            Label massage = new();
+            massage.Text = text;
+            massage.AutoSize = true;
+            massage.Font = new Font("Segoe UI", 12F);
+            massagelist.Controls.Add(massage);
         }
 
-        private void massagelist_Paint(object sender, PaintEventArgs e)
+        private void CCUList_add(string name)
         {
+            FlowLayoutPanel UserPanel = new();
+            UserPanel.BackColor = Color.Silver;
+            UserPanel.Controls.Add(label1);
+            UserPanel.Location = new Point(13, 13);
+            UserPanel.Padding = new Padding(10);
+            UserPanel.Size = new Size(200, 45);
+            UserPanel.TabIndex = 0;
 
+            Label UserNameLable = new();
+            UserNameLable.Font = new Font("Segoe UI", 13F);
+            UserPanel.Controls.Add(UserNameLable);
+            CCUPANEL.Controls.Add(UserPanel);
         }
     }
 }
 
-public class UserPack()
+public class CL_UserPack
 {
-    public string? CL_Name;
-    public List<string> Massages = new List<string>();
+    public int CL_ID { get; set; }
+    public string? CL_Name { get; set; }
+}
+
+public class Users
+{
+    public List<CL_UserPack> SV_CCU { get; set; }
 }
 
 public class DataPacks
