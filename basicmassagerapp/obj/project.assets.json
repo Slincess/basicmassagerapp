@@ -14,9 +14,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\basicmassagerapp.csproj",
-      "projectName": "basicmassagerapp",
-      "projectPath": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\basicmassagerapp.csproj",
+      "projectUniqueName": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\basicmessagerapp.csproj",
+      "projectName": "basicmessagerapp",
+      "projectPath": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\basicmessagerapp.csproj",
       "packagesPath": "C:\\Users\\kisac\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\obj\\",
       "projectStyle": "PackageReference",

@@ -1,4 +1,4 @@
-namespace basicmassagerapp
+namespace basicmessagerapp
 {
     internal static class Program
     {

@@ -11,12 +11,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("basicmassagerapp")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("basicmessagerapp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+eb0099116415f043f50aec2d61e0d18730b4277f")]
-[assembly: System.Reflection.AssemblyProductAttribute("basicmassagerapp")]
-[assembly: System.Reflection.AssemblyTitleAttribute("basicmassagerapp")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fe862f71fcd502ba4b7860b32965d46c68e68f37")]
+[assembly: System.Reflection.AssemblyProductAttribute("basicmessagerapp")]
+[assembly: System.Reflection.AssemblyTitleAttribute("basicmessagerapp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 [assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]
 [assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows7.0")]

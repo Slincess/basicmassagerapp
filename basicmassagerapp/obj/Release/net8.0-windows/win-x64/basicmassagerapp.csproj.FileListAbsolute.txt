@@ -475,3 +475,4 @@ C:\Users\kisac\source\repos\basicmassagerapp\basicmassagerapp\obj\Release\net8.0
 C:\Users\kisac\source\repos\basicmassagerapp\basicmassagerapp\obj\Release\net8.0-windows\win-x64\basicmassagerapp.pdb
 C:\Users\kisac\source\repos\basicmassagerapp\basicmassagerapp\obj\Release\net8.0-windows\win-x64\basicmassagerapp.genruntimeconfig.cache
 C:\Users\kisac\source\repos\basicmassagerapp\basicmassagerapp\obj\Release\net8.0-windows\win-x64\ref\basicmassagerapp.dll
+C:\Users\kisac\source\repos\basicmassagerapp\basicmassagerapp\obj\Release\net8.0-windows\win-x64\basicmassagerapp.Properties.Resources.resources

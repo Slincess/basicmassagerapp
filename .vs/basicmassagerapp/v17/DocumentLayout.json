@@ -7,16 +7,20 @@
       "RelativeMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmassagerapp.csproj|solutionrelative:basicmassagerapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmassagerapp.csproj|c:\\users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmessagerapp.csproj|c:\\users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\basicmessagerapp.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmessagerapp.csproj|solutionrelative:basicmassagerapp\\basicmessagerapp.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmassagerapp.csproj|c:\\users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmassagerapp.csproj|solutionrelative:basicmassagerapp\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmassagerapp.csproj|C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmassagerapp.csproj|solutionrelative:basicmassagerapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmassagerapp.csproj|c:\\users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmassagerapp.csproj|solutionrelative:basicmassagerapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmassagerapp.csproj|c:\\users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmassagerapp.csproj|solutionrelative:basicmassagerapp\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,8 +30,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "basicmessagerapp.csproj",
+              "DocumentMoniker": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\basicmessagerapp.csproj",
+              "RelativeDocumentMoniker": "basicmassagerapp\\basicmessagerapp.csproj",
+              "ToolTip": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\basicmessagerapp.csproj",
+              "RelativeToolTip": "basicmassagerapp\\basicmessagerapp.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-08-02T01:04:29.6Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -36,15 +53,14 @@
               "RelativeDocumentMoniker": "basicmassagerapp\\Form1.cs",
               "ToolTip": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\Form1.cs",
               "RelativeToolTip": "basicmassagerapp\\Form1.cs",
-              "ViewState": "AgIAAEUAAAAAAAAAAAAjwEsAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAALYAAAAAAAAAAAAYwMAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-29T15:56:01.689Z",
-              "IsPinned": true,
+              "WhenOpened": "2025-08-01T21:57:43.842Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Form1.cs [Entwurf]",
               "DocumentMoniker": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\Form1.cs",
               "RelativeDocumentMoniker": "basicmassagerapp\\Form1.cs",
@@ -56,7 +72,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\Program.cs",
               "RelativeDocumentMoniker": "basicmassagerapp\\Program.cs",
@@ -69,13 +85,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "Form1.Designer.cs",
               "DocumentMoniker": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\Form1.Designer.cs",
               "RelativeDocumentMoniker": "basicmassagerapp\\Form1.Designer.cs",
               "ToolTip": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\Form1.Designer.cs",
               "RelativeToolTip": "basicmassagerapp\\Form1.Designer.cs",
-              "ViewState": "AgIAAF4AAAAAAAAAAAAMwGcAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAoAAAAAAAAAAAD4v5gAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-29T16:02:43.697Z",
               "EditorCaption": ""

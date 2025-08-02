@@ -1,4 +1,4 @@
-﻿namespace basicmassagerapp
+﻿namespace basicmessagerapp
 {
     partial class Form1
     {
@@ -28,34 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            massagelist = new FlowLayoutPanel();
+            messagelist = new FlowLayoutPanel();
             connectButton = new Button();
             textBox1 = new TextBox();
             Sendbtn = new Button();
             NameBox = new TextBox();
             CCUPANEL = new FlowLayoutPanel();
             label2 = new Label();
-            label1 = new Label();
-            flowLayoutPanel2 = new FlowLayoutPanel();
-            CCUPANEL.SuspendLayout();
-            flowLayoutPanel2.SuspendLayout();
+            IPbox = new TextBox();
+            POORBOX = new TextBox();
             SuspendLayout();
             // 
-            // massagelist
+            // messagelist
             // 
-            massagelist.AutoScroll = true;
-            massagelist.BackColor = Color.Gray;
-            massagelist.FlowDirection = FlowDirection.TopDown;
-            massagelist.Location = new Point(252, 12);
-            massagelist.Name = "massagelist";
-            massagelist.RightToLeft = RightToLeft.No;
-            massagelist.Size = new Size(683, 562);
-            massagelist.TabIndex = 9;
-            massagelist.WrapContents = false;
+            messagelist.AutoScroll = true;
+            messagelist.BackColor = Color.Gray;
+            messagelist.FlowDirection = FlowDirection.TopDown;
+            messagelist.Location = new Point(252, 12);
+            messagelist.Name = "messagelist";
+            messagelist.RightToLeft = RightToLeft.No;
+            messagelist.Size = new Size(683, 562);
+            messagelist.TabIndex = 9;
+            messagelist.WrapContents = false;
             // 
             // connectButton
             // 
-            connectButton.Location = new Point(165, 582);
+            connectButton.Location = new Point(165, 548);
             connectButton.Name = "connectButton";
             connectButton.Size = new Size(81, 26);
             connectButton.TabIndex = 6;
@@ -68,7 +66,7 @@
             textBox1.Font = new Font("Segoe UI", 12F);
             textBox1.Location = new Point(252, 582);
             textBox1.Name = "textBox1";
-            textBox1.PlaceholderText = "type your massage";
+            textBox1.PlaceholderText = "type your message";
             textBox1.Size = new Size(614, 29);
             textBox1.TabIndex = 0;
             textBox1.KeyDown += textBox1_Enter;
@@ -85,21 +83,22 @@
             // 
             // NameBox
             // 
-            NameBox.Location = new Point(12, 582);
+            NameBox.Location = new Point(12, 551);
             NameBox.Name = "NameBox";
+            NameBox.PlaceholderText = "Name";
             NameBox.Size = new Size(147, 23);
             NameBox.TabIndex = 7;
-            NameBox.Text = "Anonym";
             // 
             // CCUPANEL
             // 
+            CCUPANEL.AutoScroll = true;
             CCUPANEL.BackColor = Color.Gray;
-            CCUPANEL.Controls.Add(flowLayoutPanel2);
             CCUPANEL.Location = new Point(12, 47);
             CCUPANEL.Name = "CCUPANEL";
             CCUPANEL.Padding = new Padding(10);
-            CCUPANEL.Size = new Size(234, 527);
+            CCUPANEL.Size = new Size(234, 495);
             CCUPANEL.TabIndex = 10;
+            CCUPANEL.WrapContents = false;
             // 
             // label2
             // 
@@ -111,25 +110,21 @@
             label2.TabIndex = 11;
             label2.Text = "Online Users";
             // 
-            // label1
+            // IPbox
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 13F);
-            label1.Location = new Point(13, 10);
-            label1.Name = "label1";
-            label1.Size = new Size(73, 25);
-            label1.TabIndex = 0;
-            label1.Text = "Slincess";
+            IPbox.Location = new Point(12, 582);
+            IPbox.Name = "IPbox";
+            IPbox.PlaceholderText = "IP";
+            IPbox.Size = new Size(115, 23);
+            IPbox.TabIndex = 12;
             // 
-            // flowLayoutPanel2
+            // POORBOX
             // 
-            flowLayoutPanel2.BackColor = Color.Silver;
-            flowLayoutPanel2.Controls.Add(label1);
-            flowLayoutPanel2.Location = new Point(13, 13);
-            flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Padding = new Padding(10);
-            flowLayoutPanel2.Size = new Size(200, 45);
-            flowLayoutPanel2.TabIndex = 0;
+            POORBOX.Location = new Point(131, 582);
+            POORBOX.Name = "POORBOX";
+            POORBOX.PlaceholderText = "port";
+            POORBOX.Size = new Size(115, 23);
+            POORBOX.TabIndex = 13;
             // 
             // Form1
             // 
@@ -138,32 +133,31 @@
             AutoSize = true;
             BackColor = Color.DimGray;
             ClientSize = new Size(957, 622);
+            Controls.Add(POORBOX);
+            Controls.Add(IPbox);
             Controls.Add(label2);
             Controls.Add(CCUPANEL);
-            Controls.Add(massagelist);
+            Controls.Add(messagelist);
             Controls.Add(textBox1);
             Controls.Add(connectButton);
             Controls.Add(Sendbtn);
             Controls.Add(NameBox);
             Name = "Form1";
             Text = "Form1";
-            CCUPANEL.ResumeLayout(false);
-            flowLayoutPanel2.ResumeLayout(false);
-            flowLayoutPanel2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private FlowLayoutPanel massagelist;
+        private FlowLayoutPanel messagelist;
         private Button connectButton;
         private TextBox textBox1;
         private Button Sendbtn;
         private TextBox NameBox;
         private FlowLayoutPanel CCUPANEL;
         private Label label2;
-        private FlowLayoutPanel flowLayoutPanel2;
-        private Label label1;
+        private TextBox IPbox;
+        private TextBox POORBOX;
     }
 }

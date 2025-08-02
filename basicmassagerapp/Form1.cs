@@ -1,11 +1,11 @@
-using basicmassagerapp;
+using basicmessagerapp;
 using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-namespace basicmassagerapp
+namespace basicmessagerapp
 {
     public partial class Form1 : Form
     {
@@ -13,14 +13,14 @@ namespace basicmassagerapp
         private NetworkStream stream;
         CancellationTokenSource cts;
 
-        private byte[] massage;
+        private byte[] message;
         private List<DataPacks> datapacks = new();
         private DataPacks MyData;
 
         private Task response;
 
         private bool IsClientConnected = false;
-        private int massagesCount = 0;
+        private int messagesCount = 0;
 
         public Form1()
         {
@@ -37,32 +37,32 @@ namespace basicmassagerapp
 
         private void Sendbtn_clicked(object sender, EventArgs e)
         {
-            SendMassage();
+            SendMessage();
         }
 
         private void textBox1_Enter(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
-                SendMassage();
+                SendMessage();
             }
         }
 
-        private void SendMassage()
+        private void SendMessage()
         {
             DataPacks data = new();
             data.CL_Name = NameBox.Text;
-            data.Massage = textBox1.Text;
+            data.Message = textBox1.Text;
 
             string dataJson = JsonSerializer.Serialize(data);
 
 
-            massage = Encoding.UTF8.GetBytes(dataJson);
-            stream.Write(massage, 0, massage.Length);
+            message = Encoding.UTF8.GetBytes(dataJson);
+            stream.Write(message, 0, message.Length);
             textBox1.Text = null;
         }
 
-        private void getmassages()
+        private void getmessages()
         {
 
             while (client.Connected)
@@ -74,31 +74,32 @@ namespace basicmassagerapp
                 {
                     break;
                 }
-                if (massagesCount == 0)
+                if (messagesCount == 0)
                 {
-                    SV_Massages Sv_massages = JsonSerializer.Deserialize<SV_Massages>(response_string);
-                    Console.WriteLine(Sv_massages);
+                    SV_Messages Sv_messages = JsonSerializer.Deserialize<SV_Messages>(response_string);
+                    Console.WriteLine(Sv_messages);
                     try
                     {
-                        if(Sv_massages.SV_allMassages != null)
+                        if (Sv_messages.SV_allMessages != null)
                         {
-                            foreach (var item in Sv_massages.SV_allMassages)
+                            foreach (var item in Sv_messages.SV_allMessages)
                             {
-                                Console.WriteLine(item.Massage);
+                                Console.WriteLine(item.Message);
                                 this.Invoke((Delegate)(() =>
                                 {
-                                    MassageList_Add(item.sender + ": " + item.Massage);
+                                    MessageList_Add(item.sender + ": " + item.Message);
                                 }));
                             }
                         }
                     }
                     catch { }
-                    massagesCount++;
+                    messagesCount++;
                 }
                 else
                 {
                     if (response_string.Contains("SV_CCU"))
                     {
+                        CCUPANEL.Controls.Clear();
                         Users CurrentUsers = JsonSerializer.Deserialize<Users>(response_string);
                         if (CurrentUsers.SV_CCU != null)
                         {
@@ -107,17 +108,16 @@ namespace basicmassagerapp
                                 this.Invoke((Delegate)(() =>
                                 {
                                     CCUList_add(item.CL_Name);
-                                    MassageList_Add(item.CL_Name);
                                 }));
                             }
                         }
                     }
-                    if (response_string.Contains("Massage"))
+                    if (response_string.Contains("Message"))
                     {
                         DataPacks response_string_Deserialized = JsonSerializer.Deserialize<DataPacks>(response_string);
                         this.Invoke((Delegate)(() =>
                         {
-                            MassageList_Add(response_string_Deserialized.CL_Name + ": " + response_string_Deserialized.Massage);
+                            MessageList_Add(response_string_Deserialized.CL_Name + ": " + response_string_Deserialized.Message);
                         }));
                     }
                 }
@@ -129,7 +129,7 @@ namespace basicmassagerapp
             DataPacks disconnectedSignal = new()
             {
                 CL_Name = "ADMIN",
-                Massage = "__DISCONNECT__"
+                Message = "__DISCONNECT__"
             };
             string disconnectedsignal_json = JsonSerializer.Serialize(disconnectedSignal);
             byte[] disconnectedsignal_byte = Encoding.UTF8.GetBytes(disconnectedsignal_json);
@@ -137,26 +137,34 @@ namespace basicmassagerapp
             Thread.Sleep(100);
             client.GetStream().Close();
             client.Close();
-            massagelist.Controls.Clear();
-            massagesCount = 0;
+            messagelist.Controls.Clear();
+            messagesCount = 0;
+            CCUPANEL.Controls.Clear();
         }
 
         private void Connect()
         {
-            byte[] name = new byte[5000];
-            name = Encoding.UTF8.GetBytes(NameBox.Text);
-            client = new TcpClient("127.0.0.1", 5000);
-            //client = new TcpClient("192.168.178.55", 5000);
-            stream = client.GetStream();
-            cts = new CancellationTokenSource();
-            response = Task.Run(() => getmassages());
-            //sresponse.Start();
-            stream.Write(name, 0, name.Length);
-
-            this.Invoke((Delegate)(() =>
+            try
             {
-                MassageList_Add("Connected");
-            }));
+                byte[] name = new byte[5000];
+                name = Encoding.UTF8.GetBytes(NameBox.Text);
+                //client = new TcpClient("127.0.0.1", 5000);
+                client = new TcpClient("", 5000);
+                stream = client.GetStream();
+                cts = new CancellationTokenSource();
+                response = Task.Run(() => getmessages());
+                //sresponse.Start();
+                stream.Write(name, 0, name.Length);
+
+                this.Invoke((Delegate)(() =>
+                {
+                    MessageList_Add("Connected");
+                }));
+            }
+            catch
+            {
+                Connect();
+            }
         }
 
 
@@ -171,6 +179,7 @@ namespace basicmassagerapp
                 Sendbtn.Enabled = false;
                 NameBox.Enabled = true;
                 textBox1.Enabled = false;
+                connectButton.Text = "Connect";
             }
             else
             {
@@ -179,23 +188,24 @@ namespace basicmassagerapp
                 Sendbtn.Enabled = true;
                 NameBox.Enabled = false;
                 textBox1.Enabled = true;
+                connectButton.Text = "Disconnect";
             }
         }
 
-        private void MassageList_Add(string text)
+        private void MessageList_Add(string text)
         {
-            Label massage = new();
-            massage.Text = text;
-            massage.AutoSize = true;
-            massage.Font = new Font("Segoe UI", 12F);
-            massagelist.Controls.Add(massage);
+            Label message = new();
+            message.Text = text;
+            message.AutoSize = true;
+            message.Font = new Font("Segoe UI", 12F);
+            messagelist.Controls.Add(message);
+            messagelist.ScrollControlIntoView(messagelist.Controls[messagelist.Controls.Count - 1]);
         }
 
         private void CCUList_add(string name)
         {
             FlowLayoutPanel UserPanel = new();
             UserPanel.BackColor = Color.Silver;
-            UserPanel.Controls.Add(label1);
             UserPanel.Location = new Point(13, 13);
             UserPanel.Padding = new Padding(10);
             UserPanel.Size = new Size(200, 45);
@@ -203,6 +213,7 @@ namespace basicmassagerapp
 
             Label UserNameLable = new();
             UserNameLable.Font = new Font("Segoe UI", 13F);
+            UserNameLable.Text = name;
             UserPanel.Controls.Add(UserNameLable);
             CCUPANEL.Controls.Add(UserPanel);
         }
@@ -223,17 +234,17 @@ public class Users
 public class DataPacks
 {
     public string? CL_Name { get; set; }
-    public string? Massage { get; set; }
+    public string? Message { get; set; }
 }
 
-public class SV_Massages
+public class SV_Messages
 {
-    public List<massage> SV_allMassages { get; set; }
+    public List<message> SV_allMessages { get; set; }
 }
 
-public class massage
+public class message
 {
-    public string? Massage { get; set; }
+    public string? Message { get; set; }
     public string? sender { get; set; }
     public string? Hour { get; set; }
 }
