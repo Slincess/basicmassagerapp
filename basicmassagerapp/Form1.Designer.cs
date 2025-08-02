@@ -36,7 +36,7 @@
             CCUPANEL = new FlowLayoutPanel();
             label2 = new Label();
             IPbox = new TextBox();
-            POORBOX = new TextBox();
+            PORTBOX = new TextBox();
             SuspendLayout();
             // 
             // messagelist
@@ -93,6 +93,7 @@
             // 
             CCUPANEL.AutoScroll = true;
             CCUPANEL.BackColor = Color.Gray;
+            CCUPANEL.FlowDirection = FlowDirection.TopDown;
             CCUPANEL.Location = new Point(12, 47);
             CCUPANEL.Name = "CCUPANEL";
             CCUPANEL.Padding = new Padding(10);
@@ -118,13 +119,13 @@
             IPbox.Size = new Size(115, 23);
             IPbox.TabIndex = 12;
             // 
-            // POORBOX
+            // PORTBOX
             // 
-            POORBOX.Location = new Point(131, 582);
-            POORBOX.Name = "POORBOX";
-            POORBOX.PlaceholderText = "port";
-            POORBOX.Size = new Size(115, 23);
-            POORBOX.TabIndex = 13;
+            PORTBOX.Location = new Point(131, 582);
+            PORTBOX.Name = "PORTBOX";
+            PORTBOX.PlaceholderText = "port";
+            PORTBOX.Size = new Size(115, 23);
+            PORTBOX.TabIndex = 13;
             // 
             // Form1
             // 
@@ -133,7 +134,7 @@
             AutoSize = true;
             BackColor = Color.DimGray;
             ClientSize = new Size(957, 622);
-            Controls.Add(POORBOX);
+            Controls.Add(PORTBOX);
             Controls.Add(IPbox);
             Controls.Add(label2);
             Controls.Add(CCUPANEL);
@@ -158,6 +159,6 @@
         private FlowLayoutPanel CCUPANEL;
         private Label label2;
         private TextBox IPbox;
-        private TextBox POORBOX;
+        private TextBox PORTBOX;
     }
 }

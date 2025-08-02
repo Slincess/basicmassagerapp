@@ -126,69 +126,87 @@ namespace basicmessagerapp
 
         private void disconnect()
         {
-            DataPacks disconnectedSignal = new()
+            if (IsClientConnected)
             {
-                CL_Name = "ADMIN",
-                Message = "__DISCONNECT__"
-            };
-            string disconnectedsignal_json = JsonSerializer.Serialize(disconnectedSignal);
-            byte[] disconnectedsignal_byte = Encoding.UTF8.GetBytes(disconnectedsignal_json);
-            stream.Write(disconnectedsignal_byte, 0, disconnectedsignal_byte.Length);
-            Thread.Sleep(100);
-            client.GetStream().Close();
-            client.Close();
-            messagelist.Controls.Clear();
-            messagesCount = 0;
-            CCUPANEL.Controls.Clear();
+                DataPacks disconnectedSignal = new()
+                {
+                    CL_Name = "ADMIN",
+                    Message = "__DISCONNECT__"
+                };
+                string disconnectedsignal_json = JsonSerializer.Serialize(disconnectedSignal);
+                byte[] disconnectedsignal_byte = Encoding.UTF8.GetBytes(disconnectedsignal_json);
+                stream.Write(disconnectedsignal_byte, 0, disconnectedsignal_byte.Length);
+                Thread.Sleep(100);
+                client.GetStream().Close();
+                client.Close();
+                messagelist.Controls.Clear();
+                messagesCount = 0;
+                CCUPANEL.Controls.Clear();
+            }
         }
 
-        private void Connect()
+        private async Task Connect()
         {
             try
             {
-                byte[] name = new byte[5000];
-                name = Encoding.UTF8.GetBytes(NameBox.Text);
-                //client = new TcpClient("127.0.0.1", 5000);
-                client = new TcpClient("", 5000);
-                stream = client.GetStream();
-                cts = new CancellationTokenSource();
-                response = Task.Run(() => getmessages());
-                //sresponse.Start();
-                stream.Write(name, 0, name.Length);
-
-                this.Invoke((Delegate)(() =>
+                if (NameBox.Text != null && PORTBOX.Text != null && IPbox.Text != null)
                 {
-                    MessageList_Add("Connected");
-                }));
+                    int port;
+                    bool suc = int.TryParse(PORTBOX.Text, out port);
+                    byte[] name = new byte[5000];
+                    name = Encoding.UTF8.GetBytes(NameBox.Text);
+                    //client = new TcpClient("127.0.0.1", 5000);
+                    client = new TcpClient(IPbox.Text, port);
+                    stream = client.GetStream();
+                    cts = new CancellationTokenSource();
+                    response = Task.Run(() => getmessages());
+                    //sresponse.Start();
+                    stream.Write(name, 0, name.Length);
+                }
+                else
+                {
+                    this.Invoke((Delegate)(() =>
+                    {
+                        MessageList_Add("CLIENT: wrong or missing ip and port or missing name");
+                    }));
+                }
             }
             catch
             {
-                Connect();
+                this.Invoke((Delegate)(() =>
+                {
+                    MessageList_Add("CLIENT: wrong port or ip");
+                }));
             }
         }
 
 
 
 
-        private void ConnectBtn_Click(object sender, EventArgs e)
+        private async void ConnectBtn_Click(object sender, EventArgs e)
         {
             if (IsClientConnected)
             {
-                disconnect();
-                IsClientConnected = false;
-                Sendbtn.Enabled = false;
-                NameBox.Enabled = true;
-                textBox1.Enabled = false;
-                connectButton.Text = "Connect";
+                
+                    disconnect();
+                    IsClientConnected = false;
+                    Sendbtn.Enabled = false;
+                    NameBox.Enabled = true;
+                    textBox1.Enabled = false;
+                    connectButton.Text = "Connect";
+                
             }
             else
             {
-                Connect();
-                IsClientConnected = true;
-                Sendbtn.Enabled = true;
-                NameBox.Enabled = false;
-                textBox1.Enabled = true;
-                connectButton.Text = "Disconnect";
+                await Connect();
+                if(client != null)
+                {
+                    IsClientConnected = true;
+                    Sendbtn.Enabled = true;
+                    NameBox.Enabled = false;
+                    textBox1.Enabled = true;
+                    connectButton.Text = "Disconnect";
+                }
             }
         }
 
