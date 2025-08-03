@@ -1,7 +1,9 @@
 using basicmessagerapp;
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -25,8 +27,6 @@ namespace basicmessagerapp
         public Form1()
         {
             InitializeComponent();
-            Sendbtn.Enabled = false;
-            NameBox.Enabled = true;
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -50,16 +50,26 @@ namespace basicmessagerapp
 
         private void SendMessage()
         {
-            DataPacks data = new();
-            data.CL_Name = NameBox.Text;
-            data.Message = textBox1.Text;
+            if(!String.IsNullOrWhiteSpace(textBox1.Text))
+            {
+                DataPacks data = new();
+                data.CL_Name = NameBox.Text;
+                data.Message = textBox1.Text;
 
-            string dataJson = JsonSerializer.Serialize(data);
+                string dataJson = JsonSerializer.Serialize(data);
 
-
-            message = Encoding.UTF8.GetBytes(dataJson);
-            stream.Write(message, 0, message.Length);
-            textBox1.Text = null;
+                try
+                {
+                    message = Encoding.UTF8.GetBytes(dataJson);
+                    stream.Write(message, 0, message.Length);
+                    textBox1.Text = null;
+                }
+                catch (Exception e)
+                {
+                        disconnect();
+                    
+                }
+            }
         }
 
         private void getmessages()
@@ -68,7 +78,15 @@ namespace basicmessagerapp
             while (client.Connected)
             {
                 byte[] response_byte = new byte[5000];
-                int response_int = stream.Read(response_byte);
+                int response_int = 0;
+                try
+                {
+                    response_int = stream.Read(response_byte);
+                }
+                catch (Exception)
+                {
+                    disconnect();
+                }
                 string response_string = Encoding.UTF8.GetString(response_byte, 0, response_int);
                 if (response_int == 0)
                 {
@@ -76,6 +94,7 @@ namespace basicmessagerapp
                 }
                 if (messagesCount == 0)
                 {
+                    messagesCount++;
                     SV_Messages Sv_messages = JsonSerializer.Deserialize<SV_Messages>(response_string);
                     Console.WriteLine(Sv_messages);
                     try
@@ -84,7 +103,7 @@ namespace basicmessagerapp
                         {
                             foreach (var item in Sv_messages.SV_allMessages)
                             {
-                                Console.WriteLine(item.Message);
+                                Debug.WriteLine(item.Message);
                                 this.Invoke((Delegate)(() =>
                                 {
                                     MessageList_Add(item.sender + ": " + item.Message);
@@ -92,8 +111,10 @@ namespace basicmessagerapp
                             }
                         }
                     }
-                    catch { }
-                    messagesCount++;
+                    catch (Exception e)
+                    {
+                        Debug.Write(e);
+                    }
                 }
                 else
                 {
@@ -115,10 +136,17 @@ namespace basicmessagerapp
                     if (response_string.Contains("Message"))
                     {
                         DataPacks response_string_Deserialized = JsonSerializer.Deserialize<DataPacks>(response_string);
-                        this.Invoke((Delegate)(() =>
+                        if (response_string_Deserialized.Message == "__KICK__" && response_string_Deserialized.CL_Name == "__SERVER__")
                         {
-                            MessageList_Add(response_string_Deserialized.CL_Name + ": " + response_string_Deserialized.Message);
-                        }));
+                            disconnect();
+                        }
+                        else
+                        {
+                            this.Invoke((Delegate)(() =>
+                            {
+                                MessageList_Add(response_string_Deserialized.CL_Name + ": " + response_string_Deserialized.Message);
+                            }));
+                        }
                     }
                 }
             }
@@ -126,7 +154,7 @@ namespace basicmessagerapp
 
         private void disconnect()
         {
-            if (IsClientConnected)
+            if (IsClientConnected && stream != null)
             {
                 DataPacks disconnectedSignal = new()
                 {
@@ -135,7 +163,20 @@ namespace basicmessagerapp
                 };
                 string disconnectedsignal_json = JsonSerializer.Serialize(disconnectedSignal);
                 byte[] disconnectedsignal_byte = Encoding.UTF8.GetBytes(disconnectedsignal_json);
-                stream.Write(disconnectedsignal_byte, 0, disconnectedsignal_byte.Length);
+                try
+                {
+                    stream.Write(disconnectedsignal_byte, 0, disconnectedsignal_byte.Length);
+                }
+                catch (Exception)
+                {
+                    client.Close();
+                    messagelist.Controls.Clear();
+                    messagesCount = 0;
+                    CCUPANEL.Controls.Clear();
+                    IsClientConnected = false;
+                    UpdateUI();
+                    return;
+                }
                 Thread.Sleep(100);
                 client.GetStream().Close();
                 client.Close();
@@ -151,43 +192,75 @@ namespace basicmessagerapp
             {
                 if (NameBox.Text != null && PORTBOX.Text != null && IPbox.Text != null)
                 {
+                    if(!NameCheck()) {ReturnErrorText("Name Is Missing"); return; }
                     int port;
                     bool suc = int.TryParse(PORTBOX.Text, out port);
                     byte[] name = new byte[5000];
                     name = Encoding.UTF8.GetBytes(NameBox.Text);
-                    //client = new TcpClient("127.0.0.1", 5000);
                     client = new TcpClient(IPbox.Text, port);
                     stream = client.GetStream();
                     cts = new CancellationTokenSource();
                     response = Task.Run(() => getmessages());
-                    //sresponse.Start();
                     stream.Write(name, 0, name.Length);
                 }
                 else
                 {
-                    this.Invoke((Delegate)(() =>
-                    {
-                        MessageList_Add("CLIENT: wrong or missing ip and port or missing name");
-                    }));
+                    ReturnErrorText("wrong or missing ip and port or missing name");
                 }
             }
             catch
             {
-                this.Invoke((Delegate)(() =>
-                {
-                    MessageList_Add("CLIENT: wrong port or ip");
-                }));
+                ReturnErrorText("wrong/missing port or ip");
+            }
+        }
+
+        private void ReturnErrorText(string ErrorText)
+        {
+            this.Invoke((Delegate)(() =>
+            {
+                MessageList_Add($"CLIENT: {ErrorText}");
+            }));
+        }
+
+        private bool NameCheck()
+        {
+            if (String.IsNullOrWhiteSpace(NameBox.Text) || NameBox.Text == "ADMIN")
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
 
 
+        private void UpdateUI()
+        {
+            if (IsClientConnected)
+            {
+                IsClientConnected = false;
+                Sendbtn.Enabled = false;
+                NameBox.Enabled = true;
+                textBox1.Enabled = false;
+                connectButton.Text = "Connect";
 
+            }
+            else
+            {
+                    IsClientConnected = true;
+                    Sendbtn.Enabled = true;
+                    NameBox.Enabled = false;
+                    textBox1.Enabled = true;
+                    connectButton.Text = "Disconnect";
+                
+            }
+        }
 
         private async void ConnectBtn_Click(object sender, EventArgs e)
         {
             if (IsClientConnected)
             {
-                
                     disconnect();
                     IsClientConnected = false;
                     Sendbtn.Enabled = false;
@@ -262,6 +335,7 @@ public class SV_Messages
 
 public class message
 {
+
     public string? Message { get; set; }
     public string? sender { get; set; }
     public string? Hour { get; set; }
