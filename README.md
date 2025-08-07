@@ -5,8 +5,8 @@ usage is very straight forward. type in your ip port and name and then press con
 it will look like this.
 
 # features
--chat load after new join.  
+-chat load after join.  
 -see who is online.
 
 # Self Host  
-you can see more under <linka text="this">https://github.com/Slincess/messagerappServer</linka> link
+you can see more under <linka>https://github.com/Slincess/simac-server</linka>
