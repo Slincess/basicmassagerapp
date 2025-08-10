@@ -111,8 +111,8 @@ namespace basicmessagerapp
             this.Invoke(() =>
             {
                 messagelist.Controls.Add(message);
+                messagelist.ScrollControlIntoView(messagelist.Controls[messagelist.Controls.Count - 1]);
             });
-            messagelist.ScrollControlIntoView(messagelist.Controls[messagelist.Controls.Count - 1]);
         }
         public void ClearEveryPanel()
         {
@@ -122,12 +122,18 @@ namespace basicmessagerapp
 
         public void MessageListClear()
         {
-            messagelist.Controls.Clear();
+            this.Invoke(() =>
+            {
+                messagelist.Controls.Clear();
+            });
         }
 
         public void CCUPanelClear()
         {
-            CCUPANEL.Controls.Clear();
+            this.Invoke(() =>
+            {
+                CCUPANEL.Controls.Clear();
+            });
         }
 
         public void CCUList_add(string name)
@@ -164,18 +170,12 @@ public class Users
 
 public class DataPacks
 {
-    public string? CL_Name { get; set; }
+    public string? Sender { get; set; }
     public string? Message { get; set; }
 }
+
 
 public class SV_Messages
 {
-    public List<message> SV_allMessages { get; set; }
-}
-
-public class message
-{
-    public string? Message { get; set; }
-    public string? sender { get; set; }
-    public string? Hour { get; set; }
+    public List<DataPacks> SV_allMessages { get; set; }
 }

@@ -50,7 +50,7 @@ namespace basicmessagerapp
             {
                 DataPacks disconnectedSignal = new()
                 {
-                    CL_Name = "ADMIN",
+                    Sender = "ADMIN",
                     Message = "__DISCONNECT__"
                 };
                 string disconnectedsignal_json = JsonSerializer.Serialize(disconnectedSignal);
@@ -112,7 +112,7 @@ namespace basicmessagerapp
                 {
                     messagesCount++;
                     SV_Messages Sv_messages = JsonSerializer.Deserialize<SV_Messages>(response_string);
-                    Console.WriteLine(Sv_messages);
+                    Debug.Write(response_string);
                     try
                     {
                         if (Sv_messages.SV_allMessages != null)
@@ -120,7 +120,7 @@ namespace basicmessagerapp
                             foreach (var item in Sv_messages.SV_allMessages)
                             {
                                 Debug.WriteLine(item.Message);
-                                Main.MessageList_Add(item.sender + ": " + item.Message);
+                                Main.MessageList_Add(item.Sender + ": " + item.Message);
                             }
                         }
                     }
@@ -147,13 +147,13 @@ namespace basicmessagerapp
                     if (response_string.Contains("Message"))
                     {
                         DataPacks response_string_Deserialized = JsonSerializer.Deserialize<DataPacks>(response_string);
-                        if (response_string_Deserialized.Message == "__KICK__" && response_string_Deserialized.CL_Name == "__SERVER__")
+                        if (response_string_Deserialized.Message == "__KICK__" && response_string_Deserialized.Sender == "__SERVER__")
                         {
                             disconnect();
                         }
                         else
                         {
-                              Main.MessageList_Add(response_string_Deserialized.CL_Name + ": " + response_string_Deserialized.Message);
+                              Main.MessageList_Add(response_string_Deserialized.Sender + ": " + response_string_Deserialized.Message);
 
                         }
                     }
@@ -166,7 +166,7 @@ namespace basicmessagerapp
             if (!String.IsNullOrWhiteSpace(Variables.Name))
             {
                 DataPacks data = new();
-                data.CL_Name = Variables.Name;
+                data.Sender = Variables.Name;
                 data.Message = Message;
 
                 string dataJson = JsonSerializer.Serialize(data);

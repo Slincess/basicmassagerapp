@@ -11,6 +11,10 @@
       "RelativeMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmessagerapp.csproj|solutionrelative:basicmassagerapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmessagerapp.csproj|c:\\users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmessagerapp.csproj|solutionrelative:basicmassagerapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmessagerapp.csproj|c:\\users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{CA13658B-B50F-44E2-A0FB-50DA7BEC5E40}|basicmassagerapp\\basicmessagerapp.csproj|solutionrelative:basicmassagerapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
@@ -22,19 +26,32 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Form1.cs [Entwurf]",
               "DocumentMoniker": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\Form1.cs",
               "RelativeDocumentMoniker": "basicmassagerapp\\Form1.cs",
               "ToolTip": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\Form1.cs [Entwurf]",
               "RelativeToolTip": "basicmassagerapp\\Form1.cs [Entwurf]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-08T21:08:57.983Z",
+              "WhenOpened": "2025-08-10T21:25:52.497Z",
               "EditorCaption": " [Entwurf]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\Program.cs",
+              "RelativeDocumentMoniker": "basicmassagerapp\\Program.cs",
+              "ToolTip": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\Program.cs",
+              "RelativeToolTip": "basicmassagerapp\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwA0AAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-10T21:25:13.746Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -44,7 +61,7 @@
               "RelativeDocumentMoniker": "basicmassagerapp\\Networking.cs",
               "ToolTip": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\Networking.cs",
               "RelativeToolTip": "basicmassagerapp\\Networking.cs",
-              "ViewState": "AgIAAKAAAAAAAAAAAAAQwLcAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAEsAAAAAAAAAAIAwwCcAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-08T21:08:16.23Z",
               "EditorCaption": ""
@@ -57,7 +74,7 @@
               "RelativeDocumentMoniker": "basicmassagerapp\\Form1.cs",
               "ToolTip": "C:\\Users\\kisac\\source\\repos\\basicmassagerapp\\basicmassagerapp\\Form1.cs",
               "RelativeToolTip": "basicmassagerapp\\Form1.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAtwDgAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAACIAAAAAAAAAAIAywHEAAABoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-01T21:57:43.842Z",
               "EditorCaption": ""
