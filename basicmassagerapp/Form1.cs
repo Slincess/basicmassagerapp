@@ -1,3 +1,5 @@
+using System.Windows.Forms;
+
 namespace basicmessagerapp
 {
     public partial class Form1 : Form
@@ -11,16 +13,10 @@ namespace basicmessagerapp
             networking = new();
             networking.Main = this;
         }
-
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             if (networking.IsClientConnected)
                 networking.disconnect();
-        }
-
-        private void Sendbtn_clicked(object sender, EventArgs e)
-        {
-            networking.SendMessage(textBox1.Text);
         }
 
         private void textBox1_Enter(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -31,7 +27,7 @@ namespace basicmessagerapp
             }
         }
 
-       
+
         public void ReturnErrorText(string ErrorText)
         {
             this.Invoke((Delegate)(() =>
@@ -57,8 +53,7 @@ namespace basicmessagerapp
         {
             if (networking.IsClientConnected)
             {
-               networking.IsClientConnected = false;
-                Sendbtn.Enabled = false;
+                networking.IsClientConnected = false;
                 NameBox.Enabled = true;
                 textBox1.Enabled = false;
                 connectButton.Text = "Connect";
@@ -66,7 +61,6 @@ namespace basicmessagerapp
             else
             {
                 networking.IsClientConnected = true;
-                Sendbtn.Enabled = true;
                 NameBox.Enabled = false;
                 textBox1.Enabled = true;
                 connectButton.Text = "Disconnect";
@@ -79,7 +73,6 @@ namespace basicmessagerapp
             {
                 networking.disconnect();
                 networking.IsClientConnected = false;
-                Sendbtn.Enabled = false;
                 NameBox.Enabled = true;
                 textBox1.Enabled = false;
                 connectButton.Text = "Connect";
@@ -91,10 +84,9 @@ namespace basicmessagerapp
                 Networkingvariables.Port = PORTBOX.Text;
                 networking.Variables = Networkingvariables;
                 await networking.Connect();
-                if(networking.client != null)
+                if (networking.client != null)
                 {
                     networking.IsClientConnected = true;
-                    Sendbtn.Enabled = true;
                     NameBox.Enabled = false;
                     textBox1.Enabled = true;
                     connectButton.Text = "Disconnect";
@@ -108,6 +100,7 @@ namespace basicmessagerapp
             message.Text = text;
             message.AutoSize = true;
             message.Font = new Font("Segoe UI", 12F);
+            message.ForeColor = Color.White;
             this.Invoke(() =>
             {
                 messagelist.Controls.Add(message);
@@ -139,7 +132,7 @@ namespace basicmessagerapp
         public void CCUList_add(string name)
         {
             FlowLayoutPanel UserPanel = new();
-            UserPanel.BackColor = Color.Silver;
+            UserPanel.BackColor = Color.FromArgb(44, 44, 47);
             UserPanel.Location = new Point(13, 13);
             UserPanel.Padding = new Padding(10);
             UserPanel.Size = new Size(200, 45);
@@ -148,6 +141,7 @@ namespace basicmessagerapp
             Label UserNameLable = new();
             UserNameLable.Font = new Font("Segoe UI", 13F);
             UserNameLable.Text = name;
+            UserNameLable.ForeColor = Color.White;
             UserPanel.Controls.Add(UserNameLable);
             this.Invoke(() =>
             {
