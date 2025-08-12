@@ -29,6 +29,8 @@ namespace basicmessagerapp
         public bool IsClientConnected = false;
         private int messagesCount = 0;
 
+        public ServerBtns serverbtn;
+
         public async Task<bool> Connect(string ip, int port)
         {
             try
@@ -67,7 +69,6 @@ namespace basicmessagerapp
                 {
                     client.Close();
                     messagesCount = 0;
-                    Main.ClearEveryPanel();
                     IsClientConnected = false;
                     Main.UpdateUI();
                     return;
@@ -76,7 +77,6 @@ namespace basicmessagerapp
                 client.GetStream().Close();
                 client.Close();
                 messagesCount = 0;
-                Main.ClearEveryPanel();
             }
         }
 
@@ -124,7 +124,7 @@ namespace basicmessagerapp
                             foreach (var item in Sv_messages.SV_allMessages)
                             {
                                 Debug.WriteLine(item.Message);
-                                Main.MessageList_Add(item.Sender + ": " + item.Message);
+                                serverbtn.MessageList_Add(item.Sender + ": " + item.Message);
                             }
                         }
                     }
@@ -137,14 +137,14 @@ namespace basicmessagerapp
                 {
                     if (response_string.Contains("SV_CCU"))
                     {
-                        Main.CCUPanelClear();
+                        serverbtn.CCUPanel.Controls.Clear();
                         Users CurrentUsers = JsonSerializer.Deserialize<Users>(response_string);
                         if (CurrentUsers.SV_CCU != null)
                         {
                             foreach (var item in CurrentUsers.SV_CCU)
                             {
                                 
-                                    Main.CCUList_add(item.CL_Name);
+                                    serverbtn.CCUList_add(item.CL_Name);
                             }
                         }
                     }
@@ -157,7 +157,7 @@ namespace basicmessagerapp
                         }
                         else
                         {
-                              Main.MessageList_Add(response_string_Deserialized.Sender + ": " + response_string_Deserialized.Message);
+                              serverbtn.MessageList_Add(response_string_Deserialized.Sender + ": " + response_string_Deserialized.Message);
 
                         }
                     }

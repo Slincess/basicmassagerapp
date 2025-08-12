@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            messagelist = new FlowLayoutPanel();
+            //messagelist = new FlowLayoutPanel();
             ServerConnectPanel = new FlowLayoutPanel();
             label3 = new Label();
             IPbox = new TextBox();
@@ -41,7 +41,7 @@
             NameBox = new TextBox();
             CloseProfile = new Button();
             textBox1 = new TextBox();
-            CCUPANEL = new FlowLayoutPanel();
+            //CCUPANEL = new FlowLayoutPanel();
             label2 = new Label();
             servers = new FlowLayoutPanel();
             AddServer = new Button();
@@ -58,6 +58,7 @@
             // 
             // messagelist
             // 
+            /*
             messagelist.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             messagelist.AutoScroll = true;
             messagelist.BackColor = Color.FromArgb(25, 26, 29);
@@ -69,6 +70,7 @@
             messagelist.Size = new Size(683, 562);
             messagelist.TabIndex = 9;
             messagelist.WrapContents = false;
+            */
             // 
             // ServerConnectPanel
             // 
@@ -235,6 +237,7 @@
             // 
             // CCUPANEL
             // 
+            /*
             CCUPANEL.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             CCUPANEL.AutoScroll = true;
             CCUPANEL.BackColor = Color.FromArgb(17, 17, 19);
@@ -246,6 +249,7 @@
             CCUPANEL.Size = new Size(181, 495);
             CCUPANEL.TabIndex = 10;
             CCUPANEL.WrapContents = false;
+            */
             // 
             // label2
             // 
@@ -352,8 +356,6 @@
             Controls.Add(label1);
             Controls.Add(servers);
             Controls.Add(label2);
-            Controls.Add(CCUPANEL);
-            Controls.Add(messagelist);
             Controls.Add(textBox1);
             Name = "Form1";
             Text = "simac";
@@ -372,11 +374,11 @@
 
         #endregion
 
-        private FlowLayoutPanel messagelist;
+        //private FlowLayoutPanel messagelist;
         private Button connectButton;
         private TextBox textBox1;
         private TextBox NameBox;
-        private FlowLayoutPanel CCUPANEL;
+        //private FlowLayoutPanel CCUPANEL;
         private Label label2;
         private TextBox IPbox;
         private TextBox PORTBOX;

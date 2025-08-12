@@ -4,6 +4,8 @@ using System.IO;
 using System.Text.Json;
 using System.IO.Pipes;
 using System.Diagnostics;
+using basicmessagerapp;
+using System.Linq;
 
 //todo:
 //join more servers
@@ -14,8 +16,10 @@ namespace basicmessagerapp
 {
     public partial class Form1 : Form
     {
-        Networking networking;
+        List<Networking> networks = new();
         NetworkingVariables Networkingvariables;
+        public Networking currentUsedNetwork;
+        public List<ServerBtns> Servers = new();
 
         public UserInfo Info = new();
 
@@ -23,20 +27,25 @@ namespace basicmessagerapp
         {
             InitializeComponent();
             LoadInfo();
-            networking = new();
-            networking.Main = this;
+            foreach (var item in Servers)
+            {
+                item.main = this;
+            }
         }
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            if (networking.IsClientConnected)
-                networking.disconnect();
+            foreach (var item in networks)
+            {
+                if (item.IsClientConnected)
+                    item.disconnect();
+            }
         }
 
         private void textBox1_Enter(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                networking.SendMessage(textBox1.Text);
+                currentUsedNetwork.SendMessage(textBox1.Text);
             }
         }
 
@@ -45,29 +54,7 @@ namespace basicmessagerapp
             string AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\simac";
             if (Directory.Exists(AppDataPath) && Path.Exists(Path.Combine(AppDataPath, "SimacJson.json")))
             {
-                string json = File.ReadAllText(Path.Combine(AppDataPath, "SimacJson.json"));
-                Info = JsonSerializer.Deserialize<UserInfo>(json) ?? new UserInfo();
-                NameBox.Text = Info.LastName;
-                NameText.Text = Info.LastName;
-                if(Info.ServerIPs.Count > 0)
-                {
-                    foreach (var item in Info.ServerIPs)
-                    {
-                        servers.Controls.Add(new Button
-                        {
-                            BackColor = Color.FromArgb(64, 65, 68),
-                            FlatStyle = FlatStyle.Flat,
-                            Font = new Font("Segoe UI", 11F),
-                            ForeColor = SystemColors.Control,
-                            Location = new Point(3, 3),
-                            Name = item.IP,
-                            Size = new Size(54, 36),
-                            TabIndex = 0,
-                            Text = item.IP,
-                            UseVisualStyleBackColor = false
-                        });
-                    }
-                }
+                HandleServers();
             }
             else
             {
@@ -77,6 +64,96 @@ namespace basicmessagerapp
 
                 File.WriteAllText(@$"{AppDataPath}\SimacJson.json", newJson);
             }
+        }
+
+        private void ServerButtonClicked(object? sender, EventArgs e)
+        {
+            
+        }
+
+        private void HandleServers()
+        {
+            string AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\simac";
+            string json = File.ReadAllText(Path.Combine(AppDataPath, "SimacJson.json"));
+            Info = JsonSerializer.Deserialize<UserInfo>(json) ?? new UserInfo();
+            NameBox.Text = Info.LastName;
+            NameText.Text = Info.LastName;
+            if (Info.ServerIPs.Count > 0)
+            {
+                foreach (var item in Info.ServerIPs)
+                {
+                    CreateServer(item);
+                }
+            }
+        }
+
+        private async Task<bool> CreateServer(Server Server)
+        {
+            Button btn = new Button
+            {
+                BackColor = Color.FromArgb(64, 65, 68),
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI", 11F),
+                ForeColor = SystemColors.Control,
+                Location = new Point(3, 3),
+                Name = Server.IP,
+                Size = new Size(54, 36),
+                TabIndex = 0,
+                Text = Server.IP,
+                UseVisualStyleBackColor = false
+            };
+            ServerBtns serverbtn = new();
+            serverbtn.networking.Main = this;
+            serverbtn.ServerListIndex = serverbtn.ServerListIndex + 1;
+            serverbtn.networking.serverbtn = serverbtn;
+            try
+            {
+                serverbtn.networking.Connect(Server.IP, Server.Port);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            serverbtn.CCUPanel = new FlowLayoutPanel
+            {
+                Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left,
+                AutoScroll = true,
+                BackColor = Color.FromArgb(17, 17, 19),
+                BorderStyle = BorderStyle.FixedSingle,
+                FlowDirection = FlowDirection.TopDown,
+                Location = new Point(75, 47),
+                Name = "CCUPANEL",
+                Padding = new Padding(10),
+                Size = new Size(181, 495),
+                TabIndex = 10,
+                WrapContents = false,
+                Visible =false
+            };
+
+            serverbtn.messagelist = new FlowLayoutPanel
+            {
+                Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
+                AutoScroll = true,
+                BackColor = Color.FromArgb(25, 26, 29),
+                BorderStyle = BorderStyle.FixedSingle,
+                FlowDirection = FlowDirection.TopDown,
+                Location = new Point(262, 12),
+                Name = "messagelist",
+                RightToLeft = RightToLeft.No,
+                Size = new Size(683, 562),
+                TabIndex = 9,
+                WrapContents = false,
+                Visible = false
+            };
+
+            this.Controls.Add(serverbtn.messagelist);
+            this.Controls.Add(serverbtn.CCUPanel);
+
+            btn.Click += serverbtn.ServerButtonClicked;
+            servers.Controls.Add(btn);
+            Servers.Add(serverbtn);
+
+            return true;
         }
 
         private void SaveInfo(UserInfo info)
@@ -103,26 +180,14 @@ namespace basicmessagerapp
         {
             this.Invoke((Delegate)(() =>
             {
-                MessageList_Add($"CLIENT: {ErrorText}");
+                currentUsedNetwork.serverbtn.MessageList_Add($"CLIENT: {ErrorText}");
             }));
         }
 
         public void UpdateUI()
         {
-            if (networking.IsClientConnected)
-            {
-                networking.IsClientConnected = false;
-                NameBox.Enabled = true;
-                textBox1.Enabled = false;
-                connectButton.Text = "Connect";
-            }
-            else
-            {
-                networking.IsClientConnected = true;
-                NameBox.Enabled = false;
-                textBox1.Enabled = true;
-                connectButton.Text = "Disconnect";
-            }
+            NameBox.Enabled = !currentUsedNetwork.IsClientConnected;
+            textBox1.Enabled = !currentUsedNetwork.IsClientConnected;
         }
 
         private async void ConnectBtn_Click(object sender, EventArgs e)
@@ -133,12 +198,14 @@ namespace basicmessagerapp
                 int port;
                 if (int.TryParse(PORTBOX.Text, out port))
                 {
-                    if (await networking.Connect(IPbox.Text, port))
+                    Networking network = new();
+                    networks.Add(network);
+                    Server ConnectedServer = new();
+                    ConnectedServer.IP = IPbox.Text;
+                    ConnectedServer.Port = port;
+                    if (await CreateServer(ConnectedServer))
                     {
                         ConnectFeedback("Connected!");
-                        Server ConnectedServer = new();
-                        ConnectedServer.IP = IPbox.Text;
-                        ConnectedServer.Port = port;
                         Info.ServerIPs.Add(ConnectedServer);
                         servers.Controls.Add(new Button
                         {
@@ -205,68 +272,6 @@ namespace basicmessagerapp
             }
         }
 
-        public void MessageList_Add(string text)
-        {
-            Label message = new();
-            message.Text = text;
-            message.AutoSize = true;
-            message.Font = new Font("Segoe UI", 12F);
-            if (text.Contains("SERVER:"))
-            {
-                message.ForeColor = Color.FromArgb(111, 168, 168);
-            }
-            else
-            {
-                message.ForeColor = Color.White;
-            }
-            this.Invoke(() =>
-            {
-                messagelist.Controls.Add(message);
-                messagelist.ScrollControlIntoView(messagelist.Controls[messagelist.Controls.Count - 1]);
-            });
-        }
-        public void ClearEveryPanel()
-        {
-            MessageListClear();
-            CCUPanelClear();
-            ConnectionFeedBackClear();
-        }
-
-        public void MessageListClear()
-        {
-            this.Invoke(() =>
-            {
-                messagelist.Controls.Clear();
-            });
-        }
-
-        public void CCUPanelClear()
-        {
-            this.Invoke(() =>
-            {
-                CCUPANEL.Controls.Clear();
-            });
-        }
-
-        public void CCUList_add(string name)
-        {
-            FlowLayoutPanel UserPanel = new();
-            UserPanel.BackColor = Color.FromArgb(44, 44, 47);
-            UserPanel.Location = new Point(13, 13);
-            UserPanel.Padding = new Padding(10);
-            UserPanel.Size = new Size(157, 45);
-            UserPanel.TabIndex = 0;
-
-            Label UserNameLable = new();
-            UserNameLable.Font = new Font("Segoe UI", 13F);
-            UserNameLable.Text = name;
-            UserNameLable.ForeColor = Color.White;
-            UserPanel.Controls.Add(UserNameLable);
-            this.Invoke(() =>
-            {
-                CCUPANEL.Controls.Add(UserPanel);
-            });
-        }
 
         public void ConnectionFeedBackClear()
         {
@@ -310,4 +315,67 @@ public class Server
 {
     public string IP { get; set; }
     public int Port { get; set; }
+}
+
+public class ServerBtns
+{
+    public int ServerListIndex;
+    public Networking networking = new();
+    public FlowLayoutPanel CCUPanel;
+    public FlowLayoutPanel messagelist;
+    public Form1 main;
+    private void ClosePanels()
+    {
+        CCUPanel.Visible = false;
+        messagelist.Visible = false;
+    }
+    private void OpenPanels()
+    {
+        CCUPanel.Visible = true;
+        messagelist.Visible = true;
+    }
+    public void CCUList_add(string name)
+    {
+        FlowLayoutPanel UserPanel = new();
+        UserPanel.BackColor = Color.FromArgb(44, 44, 47);
+        UserPanel.Location = new Point(13, 13);
+        UserPanel.Padding = new Padding(10);
+        UserPanel.Size = new Size(157, 45);
+        UserPanel.TabIndex = 0;
+
+        Label UserNameLable = new();
+        UserNameLable.Font = new Font("Segoe UI", 13F);
+        UserNameLable.Text = name;
+        UserNameLable.ForeColor = Color.White;
+        UserPanel.Controls.Add(UserNameLable);
+        CCUPanel.Controls.Add(UserPanel);
+       
+    }
+
+    public void MessageList_Add(string text)
+    {
+        Label message = new();
+        message.Text = text;
+        message.AutoSize = true;
+        message.Font = new Font("Segoe UI", 12F);
+        if (text.Contains("SERVER:"))
+        {
+            message.ForeColor = Color.FromArgb(111, 168, 168);
+        }
+        else
+        {
+            message.ForeColor = Color.White;
+        }
+            messagelist.Controls.Add(message);
+            messagelist.ScrollControlIntoView(messagelist.Controls[messagelist.Controls.Count - 1]);
+    }
+    public void ServerButtonClicked(object? sender, EventArgs e)
+    {
+        foreach (var item in main.Servers)
+        {
+            item.ClosePanels();
+        }
+        main.currentUsedNetwork = networking;
+        OpenPanels();
+    }
 }
