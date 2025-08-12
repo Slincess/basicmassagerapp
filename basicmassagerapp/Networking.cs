@@ -14,7 +14,6 @@ namespace basicmessagerapp
 {
     public class Networking
     {
-        public NetworkingVariables Variables;
         public Form1 Main;
 
         public TcpClient client { get; private set; }
@@ -30,18 +29,23 @@ namespace basicmessagerapp
         public bool IsClientConnected = false;
         private int messagesCount = 0;
 
-        public async Task Connect()
+        public async Task<bool> Connect(string ip, int port)
         {
-            if (!NameCheck()) { return; }
-            int port;
-            bool suc = int.TryParse(Variables.Port, out port);
-            byte[] name = new byte[5000];
-            name = Encoding.UTF8.GetBytes(Variables.Name);
-            client = new TcpClient(Variables.Ip, port);
-            stream = client.GetStream();
-            cts = new CancellationTokenSource();
-            response = Task.Run(() => getmessages());
-            stream.Write(name, 0, name.Length);    
+            try
+            {
+                byte[] name = new byte[5000];
+                name = Encoding.UTF8.GetBytes(Main.Info.LastName);
+                client = new TcpClient(ip, port);
+                stream = client.GetStream();
+                cts = new CancellationTokenSource();
+                response = Task.Run(() => getmessages());
+                stream.Write(name, 0, name.Length);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public void disconnect()
@@ -78,7 +82,7 @@ namespace basicmessagerapp
 
         private bool NameCheck()
         {
-            if (String.IsNullOrWhiteSpace(Variables.Name) || Variables.Name == "ADMIN")
+            if (String.IsNullOrWhiteSpace(Main.Info.LastName) || Main.Info.LastName == "ADMIN")
             {
                 return false;
             }
@@ -163,10 +167,10 @@ namespace basicmessagerapp
 
         public void SendMessage(string Message)
         {
-            if (!String.IsNullOrWhiteSpace(Variables.Name))
+            if (!String.IsNullOrWhiteSpace(Main.Info.LastName))
             {
                 DataPacks data = new();
-                data.Sender = Variables.Name;
+                data.Sender = Main.Info.LastName;
                 data.Message = Message;
 
                 string dataJson = JsonSerializer.Serialize(data);
@@ -187,9 +191,7 @@ namespace basicmessagerapp
 
 public struct NetworkingVariables
 {
-    public string Name;
-    public string Port;
-    public string Ip;
+    public UserInfo info;
     public TcpClient client;
     public NetworkStream? stream;
 }

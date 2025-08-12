@@ -4,6 +4,12 @@ using System.IO;
 using System.Text.Json;
 using System.IO.Pipes;
 using System.Diagnostics;
+
+//todo:
+//join more servers
+//change between servers and still have the chats
+//SERVER: send only last 30 messages
+//collect last 30 message in catch or maybe create panel for every server.
 namespace basicmessagerapp
 {
     public partial class Form1 : Form
@@ -11,7 +17,7 @@ namespace basicmessagerapp
         Networking networking;
         NetworkingVariables Networkingvariables;
 
-        UserInfo Info = new();
+        public UserInfo Info = new();
 
         public Form1()
         {
@@ -42,6 +48,26 @@ namespace basicmessagerapp
                 string json = File.ReadAllText(Path.Combine(AppDataPath, "SimacJson.json"));
                 Info = JsonSerializer.Deserialize<UserInfo>(json) ?? new UserInfo();
                 NameBox.Text = Info.LastName;
+                NameText.Text = Info.LastName;
+                if(Info.ServerIPs.Count > 0)
+                {
+                    foreach (var item in Info.ServerIPs)
+                    {
+                        servers.Controls.Add(new Button
+                        {
+                            BackColor = Color.FromArgb(64, 65, 68),
+                            FlatStyle = FlatStyle.Flat,
+                            Font = new Font("Segoe UI", 11F),
+                            ForeColor = SystemColors.Control,
+                            Location = new Point(3, 3),
+                            Name = item.IP,
+                            Size = new Size(54, 36),
+                            TabIndex = 0,
+                            Text = item.IP,
+                            UseVisualStyleBackColor = false
+                        });
+                    }
+                }
             }
             else
             {
@@ -60,7 +86,7 @@ namespace basicmessagerapp
             {
                 string infojson = JsonSerializer.Serialize(info);
 
-                File.WriteAllText(Path.Combine(AppDataPath, "SimacJson.json"),infojson);
+                File.WriteAllText(Path.Combine(AppDataPath, "SimacJson.json"), infojson);
             }
             else
             {
@@ -101,28 +127,81 @@ namespace basicmessagerapp
 
         private async void ConnectBtn_Click(object sender, EventArgs e)
         {
-            if (networking.IsClientConnected)
+            ConnectionFeedBackClear();
+            if (CheckAlreadyJoined(IPbox.Text, PORTBOX.Text) && !String.IsNullOrWhiteSpace(Info.LastName))
             {
-                networking.disconnect();
-                networking.IsClientConnected = false;
-                NameBox.Enabled = true;
-                textBox1.Enabled = false;
-                connectButton.Text = "Connect";
+                int port;
+                if (int.TryParse(PORTBOX.Text, out port))
+                {
+                    if (await networking.Connect(IPbox.Text, port))
+                    {
+                        ConnectFeedback("Connected!");
+                        Server ConnectedServer = new();
+                        ConnectedServer.IP = IPbox.Text;
+                        ConnectedServer.Port = port;
+                        Info.ServerIPs.Add(ConnectedServer);
+                        servers.Controls.Add(new Button
+                        {
+                            BackColor = Color.FromArgb(64, 65, 68),
+                            FlatStyle = FlatStyle.Flat,
+                            Font = new Font("Segoe UI", 11F),
+                            ForeColor = SystemColors.Control,
+                            Location = new Point(3, 3),
+                            Name = IPbox.Text,
+                            Size = new Size(54, 36),
+                            TabIndex = 0,
+                            Text = IPbox.Text,
+                            UseVisualStyleBackColor = false
+                        });
+                        SaveInfo(Info);
+                    }
+                    else 
+                    {
+                        ConnectFeedback("couldnt connect, wrong Ip or port");
+                    }
+                }
+            }
+            else if (String.IsNullOrWhiteSpace(Info.LastName)) { ConnectFeedback("name is missing"); }
+            else{ ConnectFeedback("Ip or Port Missing"); }
+        }
+
+        private void ConnectFeedback(string Feedback)
+        {
+            this.Invoke(() =>
+            {
+                Label ConnectionFeedBackText = new();
+                ConnectionFeedBackText.AutoSize = true;
+                ConnectionFeedBackText.Font = new Font("Segoe UI", 10F);
+                ConnectionFeedBackText.ForeColor = SystemColors.Control;
+                ConnectionFeedBackText.Location = new Point(3, 3);
+                ConnectionFeedBackText.Margin = new Padding(3, 3, 3, 0);
+                ConnectionFeedBackText.Name = "ConnectionFeedBackText";
+                ConnectionFeedBackText.Size = new Size(45, 19);
+                ConnectionFeedBackText.TabIndex = 0;
+                ConnectionFeedBackText.Text = Feedback;
+                ConnectionFeedback.Controls.Add(ConnectionFeedBackText);
+            });
+        }
+
+        private bool CheckAlreadyJoined(string ip,string portString)
+        {
+            int port;
+            bool suc;
+            if(suc = int.TryParse(portString,out port))
+            {
+                foreach (var item in Info.ServerIPs)
+                {
+                    if (ip != item.IP && port != item.Port)
+                    {
+                        return false;
+                    }
+                }
+                return true;
             }
             else
             {
-                Networkingvariables.Name = NameBox.Text;
-                Networkingvariables.Ip = IPbox.Text;
-                Networkingvariables.Port = PORTBOX.Text;
-                networking.Variables = Networkingvariables;
-                await networking.Connect();
-                if (networking.client != null)
-                {
-                    networking.IsClientConnected = true;
-                    NameBox.Enabled = false;
-                    textBox1.Enabled = true;
-                    connectButton.Text = "Disconnect";
-                }
+                ConnectFeedback("invalid Port");
+                return false;
             }
         }
 
@@ -150,6 +229,7 @@ namespace basicmessagerapp
         {
             MessageListClear();
             CCUPanelClear();
+            ConnectionFeedBackClear();
         }
 
         public void MessageListClear()
@@ -188,16 +268,46 @@ namespace basicmessagerapp
             });
         }
 
+        public void ConnectionFeedBackClear()
+        {
+            ConnectionFeedback.Controls.Clear();
+        }
+
         private void NameBox_TextChanged(object sender, EventArgs e)
         {
             Info.LastName = NameBox.Text;
             SaveInfo(Info);
+        }
+
+        private void ProfileEdit_Click(object sender, EventArgs e)
+        {
+            ProfilePanel.Visible = true;
+            ServerConnectPanel.Visible = false;
+        }
+
+        private void CloseProfile_Click(object sender, EventArgs e)
+        {
+            NameText.Text = Info.LastName;
+            ProfilePanel.Visible = false;
+            ServerConnectPanel.Visible = false;
+        }
+
+        private void AddServer_Click(object sender, EventArgs e)
+        {
+            ProfilePanel.Visible = false;
+            ServerConnectPanel.Visible = true;
         }
     }
 }
 
 public class UserInfo
 {
-   public List<string> ServerIPs { get; set; } = new();
-   public string LastName { get; set; } = "anonym";
+    public List<Server> ServerIPs { get; set; } = new();
+    public string LastName { get; set; } = "anonym";
+}
+
+public class Server
+{
+    public string IP { get; set; }
+    public int Port { get; set; }
 }
