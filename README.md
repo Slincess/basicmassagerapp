@@ -10,3 +10,6 @@ it will look like this.
 
 # Self Host  
 you can see more under <linka>https://github.com/Slincess/simac-server</linka>
+
+# License
+[MIT License ©](https://github.com/Slincess/simac/blob/main/LICENSE)
