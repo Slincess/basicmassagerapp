@@ -193,3 +193,22 @@ public struct NetworkingVariables
     public TcpClient client;
     public NetworkStream? stream;
 }
+
+public class CL_UserPack
+{
+    public int CL_ID { get; set; }
+    public string? CL_Name { get; set; }
+}
+public class Users
+{
+    public List<CL_UserPack> SV_CCU { get; set; }
+}
+public class DataPacks
+{
+    public string? Sender { get; set; }
+    public string? Message { get; set; }
+}
+public class SV_Messages
+{
+    public List<DataPacks> SV_allMessages { get; set; }
+}

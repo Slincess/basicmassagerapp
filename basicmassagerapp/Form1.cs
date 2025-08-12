@@ -1,5 +1,9 @@
+#pragma warning disable
 using System.Windows.Forms;
-
+using System.IO;
+using System.Text.Json;
+using System.IO.Pipes;
+using System.Diagnostics;
 namespace basicmessagerapp
 {
     public partial class Form1 : Form
@@ -7,9 +11,12 @@ namespace basicmessagerapp
         Networking networking;
         NetworkingVariables Networkingvariables;
 
+        UserInfo Info = new();
+
         public Form1()
         {
             InitializeComponent();
+            LoadInfo();
             networking = new();
             networking.Main = this;
         }
@@ -27,6 +34,44 @@ namespace basicmessagerapp
             }
         }
 
+        private void LoadInfo()
+        {
+            string AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\simac";
+            if (Directory.Exists(AppDataPath) && Path.Exists(Path.Combine(AppDataPath, "SimacJson.json")))
+            {
+                string json = File.ReadAllText(Path.Combine(AppDataPath, "SimacJson.json"));
+                Info = JsonSerializer.Deserialize<UserInfo>(json) ?? new UserInfo();
+                NameBox.Text = Info.LastName;
+            }
+            else
+            {
+                string newJson = JsonSerializer.Serialize(Info);
+                if (!Path.Exists(Path.Combine(AppDataPath, "SimacJson.json")))
+                    Directory.CreateDirectory(AppDataPath);
+
+                File.WriteAllText(@$"{AppDataPath}\SimacJson.json", newJson);
+            }
+        }
+
+        private void SaveInfo(UserInfo info)
+        {
+            string AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\simac";
+            if (Directory.Exists(AppDataPath) && Path.Exists(Path.Combine(AppDataPath, "SimacJson.json")))
+            {
+                string infojson = JsonSerializer.Serialize(info);
+
+                File.WriteAllText(Path.Combine(AppDataPath, "SimacJson.json"),infojson);
+            }
+            else
+            {
+                UserInfo infoNew = new();
+                string newJson = JsonSerializer.Serialize(infoNew);
+                if (!Path.Exists(Path.Combine(AppDataPath, "SimacJson.json")))
+                    Directory.CreateDirectory(AppDataPath);
+
+                File.WriteAllText(@$"{AppDataPath}\SimacJson.json", newJson);
+            }
+        }
 
         public void ReturnErrorText(string ErrorText)
         {
@@ -35,19 +80,6 @@ namespace basicmessagerapp
                 MessageList_Add($"CLIENT: {ErrorText}");
             }));
         }
-
-        private bool NameCheck()
-        {
-            if (String.IsNullOrWhiteSpace(NameBox.Text) || NameBox.Text == "ADMIN")
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
 
         public void UpdateUI()
         {
@@ -100,7 +132,14 @@ namespace basicmessagerapp
             message.Text = text;
             message.AutoSize = true;
             message.Font = new Font("Segoe UI", 12F);
-            message.ForeColor = Color.White;
+            if (text.Contains("SERVER:"))
+            {
+                message.ForeColor = Color.FromArgb(111, 168, 168);
+            }
+            else
+            {
+                message.ForeColor = Color.White;
+            }
             this.Invoke(() =>
             {
                 messagelist.Controls.Add(message);
@@ -135,7 +174,7 @@ namespace basicmessagerapp
             UserPanel.BackColor = Color.FromArgb(44, 44, 47);
             UserPanel.Location = new Point(13, 13);
             UserPanel.Padding = new Padding(10);
-            UserPanel.Size = new Size(200, 45);
+            UserPanel.Size = new Size(157, 45);
             UserPanel.TabIndex = 0;
 
             Label UserNameLable = new();
@@ -148,28 +187,17 @@ namespace basicmessagerapp
                 CCUPANEL.Controls.Add(UserPanel);
             });
         }
+
+        private void NameBox_TextChanged(object sender, EventArgs e)
+        {
+            Info.LastName = NameBox.Text;
+            SaveInfo(Info);
+        }
     }
 }
 
-public class CL_UserPack
+public class UserInfo
 {
-    public int CL_ID { get; set; }
-    public string? CL_Name { get; set; }
-}
-
-public class Users
-{
-    public List<CL_UserPack> SV_CCU { get; set; }
-}
-
-public class DataPacks
-{
-    public string? Sender { get; set; }
-    public string? Message { get; set; }
-}
-
-
-public class SV_Messages
-{
-    public List<DataPacks> SV_allMessages { get; set; }
+   public List<string> ServerIPs { get; set; } = new();
+   public string LastName { get; set; } = "anonym";
 }
