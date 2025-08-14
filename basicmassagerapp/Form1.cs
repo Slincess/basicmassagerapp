@@ -46,6 +46,7 @@ namespace basicmessagerapp
             if (e.KeyCode == Keys.Enter)
             {
                 currentUsedNetwork.SendMessage(textBox1.Text);
+                textBox1.Text = "";
             }
         }
 
@@ -68,7 +69,7 @@ namespace basicmessagerapp
 
         private void ServerButtonClicked(object? sender, EventArgs e)
         {
-            
+
         }
 
         private void HandleServers()
@@ -127,7 +128,7 @@ namespace basicmessagerapp
                 Size = new Size(181, 495),
                 TabIndex = 10,
                 WrapContents = false,
-                Visible =false
+                Visible = false
             };
 
             serverbtn.messagelist = new FlowLayoutPanel
@@ -222,14 +223,14 @@ namespace basicmessagerapp
                         });
                         SaveInfo(Info);
                     }
-                    else 
+                    else
                     {
                         ConnectFeedback("couldnt connect, wrong Ip or port");
                     }
                 }
             }
             else if (String.IsNullOrWhiteSpace(Info.LastName)) { ConnectFeedback("name is missing"); }
-            else{ ConnectFeedback("Ip or Port Missing"); }
+            else { ConnectFeedback("Ip or Port Missing"); }
         }
 
         private void ConnectFeedback(string Feedback)
@@ -250,11 +251,11 @@ namespace basicmessagerapp
             });
         }
 
-        private bool CheckAlreadyJoined(string ip,string portString)
+        private bool CheckAlreadyJoined(string ip, string portString)
         {
             int port;
             bool suc;
-            if(suc = int.TryParse(portString,out port))
+            if (suc = int.TryParse(portString, out port))
             {
                 foreach (var item in Info.ServerIPs)
                 {
@@ -302,6 +303,53 @@ namespace basicmessagerapp
             ProfilePanel.Visible = false;
             ServerConnectPanel.Visible = true;
         }
+
+        private void ImageSelectBrn_Click(object sender, EventArgs e)
+        {
+            var fileContent = string.Empty;
+            var filePath = string.Empty;
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                Stream fileStream = null;
+                //Update - remove parenthesis
+                if (openFileDialog.ShowDialog() == DialogResult.OK && (fileStream = openFileDialog.OpenFile()) != null)
+                {
+                    string fileName = openFileDialog.FileName;
+                    using (fileStream)
+                    {
+                        if (!FilePanel.Visible) FilePanel.Visible = true;
+
+                        currentUsedNetwork.serverbtn.messagelist.Location = new Point
+                        {
+                            Y = currentUsedNetwork.serverbtn.messagelist.Location.Y - FilePanel.Size.Height,
+                            X = currentUsedNetwork.serverbtn.messagelist.Location.X
+                        };
+
+                        CreatePicturePreview(Bitmap.FromFile(fileName));
+                    }
+                }
+            }
+        }
+
+        private void CreatePicturePreview(Image Picture)
+        {
+            PictureBox NewPreview = new()
+            {
+                Location = new Point(3, 3),
+                Name = "pictureBox1",
+                Size = new Size(150, 153),
+                SizeMode = PictureBoxSizeMode.Zoom,
+                TabIndex = 0,
+                TabStop = false,
+                Margin = new Padding(15, 3, 15, 3),
+                BackColor = Color.FromArgb(25, 23, 29),
+            };
+
+            NewPreview.Image = Picture;
+            
+            FilePanel.Controls.Add(NewPreview);
+        }
     }
 }
 
@@ -336,6 +384,14 @@ public class ServerBtns
     }
     public void CCUList_add(string name)
     {
+        if (CCUPanel.InvokeRequired)
+        {
+            CCUPanel.Invoke(() => CCUList_add(name));
+            return;
+        }
+
+        CCUPanel.Controls.Clear();
+
         FlowLayoutPanel UserPanel = new();
         UserPanel.BackColor = Color.FromArgb(44, 44, 47);
         UserPanel.Location = new Point(13, 13);
@@ -354,6 +410,13 @@ public class ServerBtns
 
     public void MessageList_Add(string text)
     {
+
+        if (messagelist.InvokeRequired)
+        {
+            messagelist.Invoke(new Action(() => MessageList_Add(text)));
+            return;
+        }
+
         Label message = new();
         message.Text = text;
         message.AutoSize = true;

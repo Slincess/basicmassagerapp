@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("basicmessagerapp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+38908c63d2861370983f4ed8602dc5c4f427b04e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4d9df815df4fa1c74d5d1701ec595dff71da8014")]
 [assembly: System.Reflection.AssemblyProductAttribute("basicmessagerapp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("basicmessagerapp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

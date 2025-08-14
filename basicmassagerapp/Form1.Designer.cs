@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            //messagelist = new FlowLayoutPanel();
             ServerConnectPanel = new FlowLayoutPanel();
             label3 = new Label();
             IPbox = new TextBox();
@@ -41,7 +40,6 @@
             NameBox = new TextBox();
             CloseProfile = new Button();
             textBox1 = new TextBox();
-            //CCUPANEL = new FlowLayoutPanel();
             label2 = new Label();
             servers = new FlowLayoutPanel();
             AddServer = new Button();
@@ -49,28 +47,14 @@
             NameText = new Label();
             ProfileEdit = new Button();
             panel1 = new Panel();
+            button1 = new Button();
+            FilePanel = new FlowLayoutPanel();
             ServerConnectPanel.SuspendLayout();
             ConnectionFeedback.SuspendLayout();
             ProfilePanel.SuspendLayout();
             servers.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
-            // 
-            // messagelist
-            // 
-            /*
-            messagelist.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            messagelist.AutoScroll = true;
-            messagelist.BackColor = Color.FromArgb(25, 26, 29);
-            messagelist.BorderStyle = BorderStyle.FixedSingle;
-            messagelist.FlowDirection = FlowDirection.TopDown;
-            messagelist.Location = new Point(262, 12);
-            messagelist.Name = "messagelist";
-            messagelist.RightToLeft = RightToLeft.No;
-            messagelist.Size = new Size(683, 562);
-            messagelist.TabIndex = 9;
-            messagelist.WrapContents = false;
-            */
             // 
             // ServerConnectPanel
             // 
@@ -235,22 +219,6 @@
             textBox1.TabIndex = 0;
             textBox1.KeyDown += textBox1_Enter;
             // 
-            // CCUPANEL
-            // 
-            /*
-            CCUPANEL.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            CCUPANEL.AutoScroll = true;
-            CCUPANEL.BackColor = Color.FromArgb(17, 17, 19);
-            CCUPANEL.BorderStyle = BorderStyle.FixedSingle;
-            CCUPANEL.FlowDirection = FlowDirection.TopDown;
-            CCUPANEL.Location = new Point(75, 47);
-            CCUPANEL.Name = "CCUPANEL";
-            CCUPANEL.Padding = new Padding(10);
-            CCUPANEL.Size = new Size(181, 495);
-            CCUPANEL.TabIndex = 10;
-            CCUPANEL.WrapContents = false;
-            */
-            // 
             // label2
             // 
             label2.AutoSize = true;
@@ -344,12 +312,40 @@
             panel1.Size = new Size(223, 48);
             panel1.TabIndex = 17;
             // 
+            // button1
+            // 
+            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            button1.BackColor = Color.FromArgb(64, 65, 68);
+            button1.FlatAppearance.BorderSize = 0;
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.ForeColor = SystemColors.Control;
+            button1.Location = new Point(894, 553);
+            button1.Margin = new Padding(180, 0, 3, 3);
+            button1.Name = "button1";
+            button1.Size = new Size(51, 23);
+            button1.TabIndex = 2;
+            button1.Text = "Image";
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += ImageSelectBrn_Click;
+            // 
+            // FilePanel
+            // 
+            FilePanel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            FilePanel.BackColor = Color.FromArgb(25, 26, 29);
+            FilePanel.Location = new Point(272, 420);
+            FilePanel.Name = "FilePanel";
+            FilePanel.Size = new Size(613, 156);
+            FilePanel.TabIndex = 18;
+            FilePanel.Visible = false;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(17, 17, 19);
             ClientSize = new Size(957, 622);
+            Controls.Add(FilePanel);
+            Controls.Add(button1);
             Controls.Add(ProfilePanel);
             Controls.Add(ServerConnectPanel);
             Controls.Add(panel1);
@@ -397,5 +393,7 @@
         private Button AddServer;
         private FlowLayoutPanel ConnectionFeedback;
         private Label label5;
+        private Button button1;
+        private FlowLayoutPanel FilePanel;
     }
 }
