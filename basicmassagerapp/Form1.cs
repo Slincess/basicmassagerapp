@@ -6,6 +6,7 @@ using System.IO.Pipes;
 using System.Diagnostics;
 using basicmessagerapp;
 using System.Linq;
+using System.Drawing.Imaging;
 
 //todo:
 //join more servers
@@ -47,6 +48,11 @@ namespace basicmessagerapp
             {
                 currentUsedNetwork.SendMessage(textBox1.Text);
                 textBox1.Text = "";
+                currentUsedNetwork.serverbtn.messagelist.Location = new Point
+                {
+                    Y = currentUsedNetwork.serverbtn.messagelist.Location.Y + currentUsedNetwork.serverbtn.FilePanel.Size.Height,
+                    X = currentUsedNetwork.serverbtn.messagelist.Location.X
+                };
             }
         }
 
@@ -147,8 +153,20 @@ namespace basicmessagerapp
                 Visible = false
             };
 
+            serverbtn.FilePanel = new()
+            {
+                Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
+                BackColor = Color.FromArgb(25, 26, 29),
+                Location = new Point(272, 420),
+                Name = "FilePanel",
+                Size = new Size(613, 156),
+                TabIndex = 18,
+                Visible = false,
+            };
+
             this.Controls.Add(serverbtn.messagelist);
             this.Controls.Add(serverbtn.CCUPanel);
+            this.Controls.Add(serverbtn.FilePanel);
 
             btn.Click += serverbtn.ServerButtonClicked;
             servers.Controls.Add(btn);
@@ -318,15 +336,16 @@ namespace basicmessagerapp
                     string fileName = openFileDialog.FileName;
                     using (fileStream)
                     {
-                        if (!FilePanel.Visible) FilePanel.Visible = true;
+                        if (!FilePanel.Visible) currentUsedNetwork.serverbtn.FilePanel.Visible = true;
 
                         currentUsedNetwork.serverbtn.messagelist.Location = new Point
                         {
-                            Y = currentUsedNetwork.serverbtn.messagelist.Location.Y - FilePanel.Size.Height,
+                            Y = currentUsedNetwork.serverbtn.messagelist.Location.Y - currentUsedNetwork.serverbtn.FilePanel.Size.Height,
                             X = currentUsedNetwork.serverbtn.messagelist.Location.X
                         };
 
                         CreatePicturePreview(Bitmap.FromFile(fileName));
+                        
                     }
                 }
             }
@@ -347,8 +366,16 @@ namespace basicmessagerapp
             };
 
             NewPreview.Image = Picture;
-            
-            FilePanel.Controls.Add(NewPreview);
+            Bitmap bitmap = new Bitmap(Picture);
+            using(var ms = new MemoryStream())
+            {
+                Image img;
+                bitmap.Save(ms, ImageFormat.Png);
+                byte[] bytes = ms.ToArray();
+
+                currentUsedNetwork.serverbtn.Selectedimage = Convert.ToBase64String(bytes);
+            }
+            currentUsedNetwork.serverbtn.FilePanel.Controls.Add(NewPreview);
         }
     }
 }
@@ -371,7 +398,9 @@ public class ServerBtns
     public Networking networking = new();
     public FlowLayoutPanel CCUPanel;
     public FlowLayoutPanel messagelist;
+    public FlowLayoutPanel FilePanel;
     public Form1 main;
+    public string Selectedimage;
     private void ClosePanels()
     {
         CCUPanel.Visible = false;
@@ -381,6 +410,7 @@ public class ServerBtns
     {
         CCUPanel.Visible = true;
         messagelist.Visible = true;
+        if(FilePanel.Controls.Count > 0) { FilePanel.Visible = true; }
     }
     public void CCUList_add(string name)
     {
@@ -406,6 +436,26 @@ public class ServerBtns
         UserPanel.Controls.Add(UserNameLable);
         CCUPanel.Controls.Add(UserPanel);
        
+    }
+
+    public void MessageListAdd_img(Image img)
+    {
+        if (messagelist.InvokeRequired)
+        {
+            messagelist.Invoke(new Action(() => MessageListAdd_img(img)));
+            return;
+        }
+
+        PictureBox pictureBox = new()
+        {
+            Name = "pictureBox1",
+            Size = new Size(420, 210),
+            TabIndex = 19,
+            TabStop = false,
+            Image = img,
+            SizeMode = PictureBoxSizeMode.Zoom
+        };
+        messagelist.Controls.Add(pictureBox);
     }
 
     public void MessageList_Add(string text)

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
@@ -97,7 +98,7 @@ namespace basicmessagerapp
 
             while (client.Connected)
             {
-                byte[] response_byte = new byte[5000];
+                byte[] response_byte = new byte[15000000];
                 int response_int = 0;
                 try
                 {
@@ -150,15 +151,34 @@ namespace basicmessagerapp
                     }
                     if (response_string.Contains("Message"))
                     {
-                        DataPacks response_string_Deserialized = JsonSerializer.Deserialize<DataPacks>(response_string);
-                        if (response_string_Deserialized.Message == "__KICK__" && response_string_Deserialized.Sender == "__SERVER__")
+                        Debug.WriteLine(response_string);
+                        DataPacks response_DataPacks = JsonSerializer.Deserialize<DataPacks>(response_string);
+                        if (response_DataPacks.Message == "__KICK__" && response_DataPacks.Sender == "__SERVER__")
                         {
                             disconnect();
                         }
                         else
                         {
-                              serverbtn.MessageList_Add(response_string_Deserialized.Sender + ": " + response_string_Deserialized.Message);
+                            serverbtn.MessageList_Add(response_DataPacks.Sender + ": " + response_DataPacks.Message);
 
+                                try
+                                {
+                                    byte[] image_byte = Convert.FromBase64String(response_DataPacks.Picture);
+                                    Bitmap bitmap;
+                                    using var ms = new MemoryStream(image_byte);
+                                    bitmap = new Bitmap(ms);
+
+                                    Image image;
+                                    image = bitmap;
+
+                                    serverbtn.MessageListAdd_img(image);
+                            }
+                                catch (Exception e)
+                                {
+                                    Debug.WriteLine(e);
+                                    
+                                }
+                            
                         }
                     }
                 }
@@ -173,15 +193,27 @@ namespace basicmessagerapp
                 data.Sender = Main.Info.LastName;
                 data.Message = Message;
 
+                try
+                {
+                    data.Picture = Main.currentUsedNetwork.serverbtn.Selectedimage;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e);
+                }
+
                 string dataJson = JsonSerializer.Serialize(data);
+                
 
                 try
                 {
                     message = Encoding.UTF8.GetBytes(dataJson);
                     stream.Write(message, 0, message.Length);
+                    Debug.WriteLine(Main.currentUsedNetwork.serverbtn.Selectedimage);
                 }
                 catch (Exception e)
                 {
+                    Debug.WriteLine(e);
                     disconnect();
                 }
             }
@@ -209,7 +241,9 @@ public class DataPacks
 {
     public string? Sender { get; set; }
     public string? Message { get; set; }
+    public string? Picture { get; set; }
 }
+
 public class SV_Messages
 {
     public List<DataPacks> SV_allMessages { get; set; }
