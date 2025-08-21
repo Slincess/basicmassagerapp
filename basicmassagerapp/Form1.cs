@@ -48,11 +48,16 @@ namespace basicmessagerapp
             {
                 currentUsedNetwork.SendMessage(textBox1.Text);
                 textBox1.Text = "";
-                currentUsedNetwork.serverbtn.messagelist.Location = new Point
+                if(currentUsedNetwork.serverbtn.FilePanel.Controls.Count != 0)
                 {
-                    Y = currentUsedNetwork.serverbtn.messagelist.Location.Y + currentUsedNetwork.serverbtn.FilePanel.Size.Height,
-                    X = currentUsedNetwork.serverbtn.messagelist.Location.X
-                };
+                    currentUsedNetwork.serverbtn.messagelist.Location = new Point
+                    {
+                        Y = currentUsedNetwork.serverbtn.messagelist.Location.Y + currentUsedNetwork.serverbtn.FilePanel.Size.Height,
+                        X = currentUsedNetwork.serverbtn.messagelist.Location.X
+                    };
+                    currentUsedNetwork.serverbtn.FilePanel.Controls.Clear();
+                    currentUsedNetwork.serverbtn.Selectedimage = null;
+                }
             }
         }
 
