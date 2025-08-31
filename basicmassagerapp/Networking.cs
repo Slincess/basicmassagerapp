@@ -51,35 +51,35 @@ namespace basicmessagerapp
             }
         }
 
-        public void disconnect()
+        public async Task disconnect()
         {
             if (IsClientConnected && stream != null)
             {
-                DataPacks disconnectedSignal = new()
+                var disconnectedSignal = new DataPacks
                 {
                     Sender = "ADMIN",
                     Message = "__DISCONNECT__"
                 };
-                string disconnectedsignal_json = JsonSerializer.Serialize(disconnectedSignal);
-                byte[] disconnectedsignal_byte = Encoding.UTF8.GetBytes(disconnectedsignal_json);
+
+                string json = JsonSerializer.Serialize(disconnectedSignal);
+                byte[] buffer = Encoding.UTF8.GetBytes(json);
+
                 try
                 {
-                    stream.Write(disconnectedsignal_byte, 0, disconnectedsignal_byte.Length);
+                    await stream.WriteAsync(buffer, 0, buffer.Length);
                 }
-                catch (Exception)
+                catch
                 {
                     client.Close();
-                    messagesCount = 0;
-                    IsClientConnected = false;
-                    Main.UpdateUI();
                     return;
                 }
-                Thread.Sleep(100);
-                client.GetStream().Close();
+
+                await Task.Delay(100);
+                stream.Close();
                 client.Close();
-                messagesCount = 0;
             }
         }
+
 
         private bool NameCheck()
         {
@@ -138,6 +138,10 @@ namespace basicmessagerapp
                 {
                     if (response_string.Contains("SV_CCU"))
                     {
+                        if (serverbtn.CCUPanel.InvokeRequired)
+                        {
+                            serverbtn.CCUPanel.Invoke(() => serverbtn.CCUPanel.Controls.Clear() );
+                        }
                         serverbtn.CCUPanel.Controls.Clear();
                         Users CurrentUsers = JsonSerializer.Deserialize<Users>(response_string);
                         if (CurrentUsers.SV_CCU != null)

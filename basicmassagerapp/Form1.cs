@@ -7,6 +7,7 @@ using System.Diagnostics;
 using basicmessagerapp;
 using System.Linq;
 using System.Drawing.Imaging;
+using System.Threading.Tasks;
 
 //todo:
 //join more servers
@@ -35,11 +36,16 @@ namespace basicmessagerapp
         }
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
+            base.OnFormClosing(e);
+
+            var tasks = new List<Task>();
             foreach (var item in networks)
             {
                 if (item.IsClientConnected)
-                    item.disconnect();
+                    tasks.Add(item.disconnect());
             }
+
+            Task.WhenAll(tasks).Wait();
         }
 
         private void textBox1_Enter(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -94,7 +100,7 @@ namespace basicmessagerapp
             {
                 foreach (var item in Info.ServerIPs)
                 {
-                    CreateServer(item);
+                   _ = CreateServer(item);
                 }
             }
         }
@@ -112,7 +118,8 @@ namespace basicmessagerapp
                 Size = new Size(54, 36),
                 TabIndex = 0,
                 Text = Server.IP,
-                UseVisualStyleBackColor = false
+                UseVisualStyleBackColor = false,
+                Enabled = false
             };
             ServerBtns serverbtn = new();
             serverbtn.networking.Main = this;
@@ -120,7 +127,19 @@ namespace basicmessagerapp
             serverbtn.networking.serverbtn = serverbtn;
             try
             {
-                serverbtn.networking.Connect(Server.IP, Server.Port);
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        bool success = await serverbtn.networking.Connect(Server.IP, Server.Port);
+                        if (success) { this.Invoke(() => btn.Enabled = true); };
+                    }
+                    catch
+                    {
+
+                        throw;
+                    }
+                });
             }
             catch (Exception)
             {
@@ -424,8 +443,6 @@ public class ServerBtns
             CCUPanel.Invoke(() => CCUList_add(name));
             return;
         }
-
-        CCUPanel.Controls.Clear();
 
         FlowLayoutPanel UserPanel = new();
         UserPanel.BackColor = Color.FromArgb(44, 44, 47);
