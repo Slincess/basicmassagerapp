@@ -1,12 +1,17 @@
-# usage  
-usage is very straight forward. type in your ip port and name and then press connect and you are connected!  
+# Looks
 
-<img width="749" height="447" alt="image" src="https://github.com/user-attachments/assets/b17e0e9e-9cb7-4aaf-9814-de30122e6601" />  <br />
-it will look like this.
+<img width="1916" height="1020" alt="image" src="https://github.com/user-attachments/assets/f38fcbad-3169-45c5-aa76-9994e71410ce" />
 
 # features
 -chat load after join.  
 -see who is online.
+
+# Planed features
+-send pictures/video/voice messages  
+-voice call  
+-profiles    
+-profile customization  
+-custom emojis  
 
 # Self Host  
 you can see more under <linka>https://github.com/Slincess/simac-server</linka>
